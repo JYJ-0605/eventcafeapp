@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Modal, View, Text, Button, TouchableOpacity, StyleSheet } from 'react-native';
-import LoginForm from '../forms/LoginForm';
+import LoginForm from '../components/forms/LoginForm';
 
 const LoginScreen = () => {
   const [modalVisible, setModalVisible] = useState(false);
@@ -55,14 +55,16 @@ const styles = StyleSheet.create({
     fontSize: 18,
   },
   modalContainer: {
-    flex: 1,
+    
     justifyContent: 'center',
-    alignItems: 'center',
+    
     backgroundColor: 'rgba(0, 0, 0, 0.5)', // 반투명 배경
+    marginTop: 100, 
+    paddingBottom: 50,
   },
   modalContent: {
-    width: '80%',
-    padding: 20,
+    width: '100%',
+    padding: 1,
     backgroundColor: 'white',
     borderRadius: 10,
     alignItems: 'center',
