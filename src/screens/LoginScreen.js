@@ -1,39 +1,31 @@
 import React, { useState } from 'react';
-import { Modal, View, Text, Button, TouchableOpacity, StyleSheet } from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import LoginForm from '../components/forms/LoginForm';
 
 const LoginScreen = () => {
-  const [modalVisible, setModalVisible] = useState(false);
+  const [modalVisible, setModalVisible] = useState(false); //로그인
 
-  const openModal = () => {
-    setModalVisible(true);
-  };
-
-  const closeModal = () => {
-    setModalVisible(false);
-  };
+  const openLoginModal = () => setModalVisible(true);
+  const closeLoginModal = () => setModalVisible(false);
 
   return (
     <View style={styles.container}>
-      {/* 로그인 버튼 */}
-      <TouchableOpacity onPress={openModal} style={styles.loginButton}>
+      <TouchableOpacity onPress={openLoginModal} style={styles.loginButton}>
         <Text style={styles.loginButtonText}>로그인</Text>
       </TouchableOpacity>
 
-      {/* 로그인 모달 */}
-      <Modal
-        animationType="slide"
-        transparent={true}
-        visible={modalVisible}
-        onRequestClose={closeModal}
-      >
-        <View style={styles.modalContainer}>
-          <View style={styles.modalContent}>
-            <LoginForm />
-            <Button title="닫기" onPress={closeModal}/>
-          </View>
+      {/* 로그인 폼을 화면에 직접 렌더링 */}
+      {modalVisible && (
+        <View style={styles.modalContent}>
+          <LoginForm
+            closeModal={closeLoginModal}
+            openSignUpModal={() => console.log('회원가입 모달 열기')} // 회원가입 모달 열기 함수 호출
+          />
+          <TouchableOpacity onPress={closeLoginModal}>
+            <Text style={styles.closeText}>닫기</Text>
+          </TouchableOpacity>
         </View>
-      </Modal>
+      )}
     </View>
   );
 };
@@ -55,20 +47,18 @@ const styles = StyleSheet.create({
     fontSize: 18,
   },
   modalContainer: {
-    
+    flex: 1,
     justifyContent: 'center',
-    
+    alignItems: 'center',
     backgroundColor: 'rgba(0, 0, 0, 0.5)', // 반투명 배경
-    marginTop: 100, 
-    paddingBottom: 50,
   },
   modalContent: {
-    width: '100%',
-    padding: 1,
+    width: '80%',
+    padding: 20,
     backgroundColor: 'white',
     borderRadius: 10,
     alignItems: 'center',
   },
-});//이거 인식 안됨
+});
 
 export default LoginScreen;

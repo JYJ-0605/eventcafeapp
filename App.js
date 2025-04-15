@@ -4,46 +4,70 @@ import AppNavigator from './src/screens/MainScreen';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { useState } from 'react';
-import LoginForm from './src/components/forms/LoginForm'; // LoginForm 임포트
+import LoginForm from './src/components/forms/LoginForm';
+import SignUpForm from './src/components/forms/SignUpForm';
 
 const Stack = createStackNavigator();
 
 export default function App() {
-  const [modalVisible, setModalVisible] = useState(false);
+  const [modalVisible, setModalVisible] = useState(false); //로그인
+  const [showSignUpModal, setShowSignUpModal] = useState(false); //회원가입
 
-  const openModal = () => setModalVisible(true); // 모달 열기
-  const closeModal = () => setModalVisible(false); // 모달 닫기
+
+  const openModal = () => setModalVisible(true);
+  const closeModal = () => setModalVisible(false);
 
   return (
-    <SafeAreaView style={styles.container}>
-      <StatusBar style="auto" />
-      {/* 네비게이터 */}
-      <NavigationContainer>
-        <Stack.Navigator screenOptions = {{headerShown : false}}>
-        <Stack.Screen name="MainScreen">
-            {() => <AppNavigator onLoginPress={openModal} />}
+    <NavigationContainer>
+      <SafeAreaView style={styles.container}>
+        <StatusBar style="auto" />
+        <Stack.Navigator screenOptions={{ headerShown: false }}>
+          {/* MainScreen 내에서 로그인 모달 열기 */}
+          <Stack.Screen name="MainScreen">
+            {({ navigation }) => (
+              <AppNavigator onLoginPress={openModal} navigation={navigation}/>
+            )}
           </Stack.Screen>
-          <Stack.Screen name="LoginForm" component={LoginForm} />
         </Stack.Navigator>
-      </NavigationContainer>
 
-      {/* 로그인 모달 */}
-      <Modal
-        animationType="slide"
-        transparent={true}
-        visible={modalVisible}
-        onRequestClose={closeModal}
-      >
-        <View style={styles.modalContainer}>
-          <View style={styles.modalContent}>
-            <NavigationContainer independent={true}>
-              <LoginForm />
-            </NavigationContainer>
-            <Button title="닫기" onPress={closeModal} color="red" />
+        {/* 로그인 모달을 별도의 스크린처럼 다룰 수 있도록 수정 */}
+        <Modal
+          animationType="slide"
+          transparent={true}
+          visible={modalVisible}
+          onRequestClose={closeModal}
+        >
+          <View style={styles.modalContainer}>
+            <View style={styles.modalContent}>
+            <LoginForm
+                closeModal={() => setModalVisible(false)}
+                openSignUpModal={() => {
+                setModalVisible(false);
+                  setShowSignUpModal(true); // ✅ 회원가입 모달 열기
+                }}
+                navigation={null}
+              />
+              </View>
           </View>
-        </View>
-      </Modal>
-    </SafeAreaView>
+        </Modal>
+
+             
+        <Modal
+          animationType="slide"
+          transparent={true}
+          visible={showSignUpModal}
+          onRequestClose={() => setShowSignUpModal(false)}
+        ><View style={styles.modalContainer}>
+            <View style={styles.modalContent}>
+              <SignUpForm
+                closeModal={() => setShowSignUpModal(false)}
+                openLoginModal={() => setModalVisible(true)}
+              />
+            </View>
+          </View>
+        </Modal>
+      </SafeAreaView>
+    </NavigationContainer>
   );
 }
 
@@ -56,11 +80,12 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: 'rgba(0, 0, 0, 0.5)', // 반투명 배경
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
   },
   modalContent: {
     width: '80%',
     maxHeight: '80%',
+    maxWidth: 700,
     padding: 20,
     backgroundColor: 'white',
     borderRadius: 10,

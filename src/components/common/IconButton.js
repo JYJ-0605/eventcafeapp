@@ -2,10 +2,10 @@ import React from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { FontAwesome } from '@expo/vector-icons';
 
-const IconButton = ({ icon, text }) => (
-  <TouchableOpacity style={styles.container}>
-    <FontAwesome name={icon} size={24} color="#fcb2ae" />
-    <Text style={styles.text}>{text}</Text>
+const IconButton = ({ icon, text, onPress }) => (
+  <TouchableOpacity style={styles.container} onPress={onPress}>
+    <FontAwesome name={icon} size={24} color="#fcb2ae"/>
+    {!!text && <Text style={styles.text}>{text}</Text>}
   </TouchableOpacity>
 );
 

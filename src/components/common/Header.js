@@ -1,16 +1,23 @@
 // 로고, 로그인 헤더
 import React from 'react';
 import { View, Image, TouchableOpacity, Text, StyleSheet } from 'react-native';
+import { FontAwesome } from '@expo/vector-icons';
 import logo from '../../../assets/logo.png';
 
-const Header = ({ onLoginPress }) => (
+const Header = ({ onLoginPress, onIconPress }) => (
   <View style={styles.container}>
-    {/* 로고 이미지를 표시 */}
+    {/* 로고 이미지 */}
     <Image source={logo} style={styles.logo} />
-    {/* 로그인 버튼 */}
-    <TouchableOpacity onPress={onLoginPress}>
-      <Text style={styles.loginText}>로그인</Text>
-    </TouchableOpacity>
+
+    {/* 아이콘 + 로그인 텍스트 */}
+    <View style={styles.loginContainer}>
+      <TouchableOpacity onPress={onIconPress}>
+        <FontAwesome name="user-plus" size={20} color="#007bff" style={styles.icon} />
+      </TouchableOpacity>
+      <TouchableOpacity onPress={onLoginPress}>
+        <Text style={styles.loginText}>로그인</Text>
+      </TouchableOpacity>
+    </View>
   </View>
 );
 
@@ -26,10 +33,17 @@ const styles = StyleSheet.create({
     height: 40,
     resizeMode: 'contain',
   },
+  loginContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingRight: 10,
+  },
+  icon: {
+    marginRight: 15,
+  },
   loginText: { 
     fontSize: 17,
     color: '#007bff',
-    padding: 10,
   },
 });
 

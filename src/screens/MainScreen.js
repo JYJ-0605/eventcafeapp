@@ -6,22 +6,32 @@ import IconButton from '../components/common/IconButton';
 import Card from '../components/common/Card';
 
 const MainScreen = ({ onLoginPress }) => {
+
+  const images = [
+    require('../../assets/banner/banner_sample1.jpg'),
+    require('../../assets/banner/banner_sample2.jpg'),
+    require('../../assets/banner/banner_sample3.jpg'),
+  ];
+
   return (
     <ScrollView style={styles.container}>
       {/* Header에 onLoginPress 전달 */}
       <Header onLoginPress={onLoginPress} />
       <SearchBar />
-      <View style={styles.bannerContainer}></View>
+      <View style={styles.bannerContainer}>
+
+      </View>
+      <View style={styles.iconRow}>
+        <IconButton icon="fire" text="인기 카페 이벤트" />
+        <IconButton icon="calendar-check-o" text="캘린더"/>
+        <IconButton icon="comments" text="게시판" />
+      </View>
       <View style={styles.iconRow}>
         <IconButton icon="map-marker" text="장소 등록" />
         <IconButton icon="coffee" text="장소 대관" />
         <IconButton icon="birthday-cake" text="이벤트 등록" />
       </View>
-      <View style={styles.iconRow}>
-        <IconButton icon="fire" text="인기 카페 이벤트" />
-        <IconButton icon="heart" text="광고 등록" />
-      </View>
-      <Card title="인기 생일카페" />
+      <Card title="인기 카페 이벤트" />
       <Card title="대관 가능한 장소" />
     </ScrollView>
   );
