@@ -22,7 +22,7 @@ const MainScreen = ({ onLoginPress }) => {
 
       </View>
       <View style={styles.iconRow}>
-      <IconButton icon="fire" text="인기 카페 이벤트" />
+        <IconButton icon="fire" text="인기 카페 이벤트" />
         <IconButton icon="calendar-check-o" text="캘린더"/>
         <IconButton icon="comments" text="게시판" />
       </View>

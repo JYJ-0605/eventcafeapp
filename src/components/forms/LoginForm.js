@@ -13,8 +13,10 @@ import { useNavigation } from "@react-navigation/native";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 
-const LoginForm = () => {
-  const navigation = useNavigation();
+
+
+const LoginForm = ({ closeModal, openSignUpModal }) => {
+  const nav = useNavigation();
 
   const handleLogin = () => {
     Alert.alert("로그인 요청");
@@ -33,7 +35,7 @@ const LoginForm = () => {
       {/* 로고 섹션 */}
       <View style={styles.logoContainer}>
         <Image
-          source={require("../../../assets/logo.png")} // 로고 이미지 경로
+          source={require("../../../assets/logo.png")}
           style={styles.logo}
         />
       </View>
@@ -64,15 +66,16 @@ const LoginForm = () => {
           계정이 없으신가요?{" "}
           <Text
             style={styles.signupLink}
-            onPress={() => navigation.navigate("SignUpScreen")}
+            onPress={() => {
+              openSignUpModal();
+            }}
           >
             회원가입
           </Text>
         </Text>
       </View>
 
-      {/* SNS 로그인 *//* 만약 TextInput이 View 내부에 감싸져 있다면, View의 크기에 따라 입력 칸이 제한될 수도 있음. */}
-      
+      {/* SNS 로그인 */}
       <View style={styles.dividerContainer}>
         <Text style={styles.dividerText}>SNS로 로그인하기</Text>
       </View>
@@ -82,7 +85,7 @@ const LoginForm = () => {
           <Text style={styles.kakaoButtonText}>카카오로 로그인</Text>
         </TouchableOpacity>
         <TouchableOpacity style={styles.naverButton} onPress={handleNaverLogin}>
-          <FontAwesome name="google" size={24} style={styles.icon} color="#757575" />
+          <FontAwesome name="envelope" size={24} style={styles.icon} color="#757575" />
           <Text style={styles.naverButtonText}>네이버로 로그인</Text>
         </TouchableOpacity>
       </View>
@@ -93,9 +96,9 @@ const LoginForm = () => {
 const styles = StyleSheet.create({
   container: {
     height: "80%",
-    justifyContent: "center", // 중앙이 아니라 아래쪽으로 배치
-    paddingTop: 5, // 폼을 아래로
-    alignItems: "center",// 모든 아이템 가운데 정렬, container에 이게 center로 되어있으면 아이템들 축소가 될 수도 있음
+    justifyContent: "center",
+    paddingTop: 5,
+    alignItems: "center",
   },
   logoContainer: {
     marginBottom: 3,
@@ -112,24 +115,22 @@ const styles = StyleSheet.create({
   },
   form: {
     width: "100%",
-    maxWidth: 320,//로그인 칸?
-    marginBottom: 50,// 총 높이임 제일 중요함!
+    maxWidth: 320,
+    marginBottom: 50,
   },
   input: {
-
-    
     height: 40,
     borderWidth: 1,
     borderColor: "#ccc",
     borderRadius: 8,
-    
-    marginBottom: 10, //로그인칸 모이게 하기
+    marginBottom: 10,
     backgroundColor: "#fff",
+    paddingHorizontal: 10,
   },
   loginButton: {
     backgroundColor: "#007BFF",
     paddingVertical: 12,
-    paddingHorizontal: 55,// 로그인칸 늘어나는 데 얘도 있어야 댐
+    paddingHorizontal: 55,
     borderRadius: 8,
     alignItems: "center",
     marginBottom: 2,
@@ -138,7 +139,7 @@ const styles = StyleSheet.create({
     color: "#fff",
     fontWeight: "bold",
     fontSize: 16,
-    paddingHorizontal: 26,//이게 진짜 늘어남 로그인 칸
+    paddingHorizontal: 26,
   },
   signupText: {
     textAlign: "center",
@@ -147,9 +148,9 @@ const styles = StyleSheet.create({
   signupLink: {
     color: "#007BFF",
     fontWeight: "bold",
-  },//marginVertical이 클수록 소셜로그인 위로 올라옴
+  },
   dividerContainer: {
-    marginVertical: 1,// 얘가 크면 아이콘이 모이게됨
+    marginVertical: 1,
     alignItems: "center",
   },
   dividerText: {
@@ -167,7 +168,7 @@ const styles = StyleSheet.create({
     paddingVertical: 13,
     paddingHorizontal: 46,
     borderRadius: 8,
-    marginBottom: 8,//카카오, 네이버 버튼 사이
+    marginBottom: 8,
     justifyContent: "center",
   },
   kakaoButtonText: {
@@ -183,15 +184,15 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: "#E0E0E0",
     paddingVertical: 13,
-    paddingHorizontal: 46,//버튼 너비
+    paddingHorizontal: 46,
     borderRadius: 8,
     justifyContent: "center",
   },
   naverButtonText: {
     color: "#757575",
     fontWeight: "bold",
-    fontSize: 13, //카카오 버튼 텍스트랑 동일하게
-    marginLeft: 8,// 버튼 너비
+    fontSize: 13,
+    marginLeft: 8,
   },
   icon: {
     marginRight: 8,

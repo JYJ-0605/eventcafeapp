@@ -11,6 +11,8 @@ const Stack = createStackNavigator();
 
 export default function App() {
   const [modalVisible, setModalVisible] = useState(false);
+  const [showSignUpModal, setShowSignUpModal] = useState(false); // ✅ 추가!!
+
 
   const openModal = () => setModalVisible(true);
   const closeModal = () => setModalVisible(false);
@@ -27,15 +29,17 @@ export default function App() {
             )}
           </Stack.Screen>
 
-          {/* 로그인 폼 화면 */}
-          <Stack.Screen name="LoginForm">
-            {({ navigation }) => (
-              <LoginForm closeModal={closeModal} navigation={navigation} />
-            )}
-          </Stack.Screen>
+         
 
-          {/* 회원가입 화면을 SignUpForm으로 수정 */}
-          <Stack.Screen name="SignUpForm" component={SignUpForm} />
+          {/* 회원가입 화면 */}
+          <Stack.Screen name="SignUpScreen">
+            {({ navigation }) => (
+              <SignUpForm
+                closeModal={closeModal}
+                navigation={navigation}
+              />
+            )}  
+          </Stack.Screen>
         </Stack.Navigator>
 
         {/* 로그인 모달을 별도의 스크린처럼 다룰 수 있도록 수정 */}
@@ -47,7 +51,30 @@ export default function App() {
         >
           <View style={styles.modalContainer}>
             <View style={styles.modalContent}>
-              <LoginForm closeModal={closeModal} navigation={null} />
+            <LoginForm
+                closeModal={() => setModalVisible(false)}
+                openSignUpModal={() => {
+                setModalVisible(false);
+                  setShowSignUpModal(true); // ✅ 회원가입 모달 열기
+                }}
+                navigation={null}
+              />
+              </View>
+          </View>
+        </Modal>
+
+              {/* ✅ 회원가입 모달 */}
+        <Modal
+          animationType="slide"
+          transparent={true}
+          visible={showSignUpModal}
+          onRequestClose={() => setShowSignUpModal(false)}
+        >
+          <View style={styles.modalContainer}>
+            <View style={styles.modalContent}>
+              <SignUpForm
+                closeModal={() => setShowSignUpModal(false)}
+              />
               <Button title="닫기" onPress={closeModal} color="red" />
             </View>
           </View>
