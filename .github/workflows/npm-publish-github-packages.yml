@@ -22,15 +22,10 @@ jobs:
       run: npm ci
 
     # 📱 Android SDK 설정 + APK 빌드
-    - name: Install Android SDK & build APK
-      uses: reactivecircus/android-emulator-runner@v2
-      with:
-        api-level: 30
-        target: default
-        arch: x86_64
-        script: |
-          cd android
-          ./gradlew assembleRelease
+    - name: Build APK
+      run: |
+       cd android
+       ./gradlew assembleRelease
 
     - name: Upload APK
       uses: actions/upload-artifact@v4
