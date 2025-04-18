@@ -64,7 +64,13 @@ const SignUpForm = ({ closeModal, openLoginModal }) => {
 
   const handleGoToLogin = () => {
     closeModal();         // 회원가입 모달 닫고
-    openLoginModal();     // ✅ props로 받은 걸 실행
+    
+      if (typeof openLoginModal === 'function') {
+        openLoginModal();
+      } else {
+        console.warn('openLoginModal is undefined or not a function');
+      }
+    
   };
 
   return (
@@ -136,7 +142,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
     borderRadius: 10,
     padding: 20,
-    height: 500,
+    height: 400,
     width: "95%",
     maxWidth: 600,
     elevation: 5, // 그림자 효과

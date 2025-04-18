@@ -51,6 +51,7 @@ export default function App() {
           </View>
         </Modal>
 
+        {/* ✅ 회원가입 모달 */}
              
         <Modal
           animationType="slide"
