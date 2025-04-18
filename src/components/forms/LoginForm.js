@@ -75,7 +75,8 @@ const LoginForm = ({ closeModal, openSignUpModal }) => {
         </Text>
       </View>
 
-      {/* SNS 로그인 */}
+      {/* SNS 로그인 *//* 만약 TextInput이 View 내부에 감싸져 있다면, View의 크기에 따라 입력 칸이 제한될 수도 있음. */}
+      
       <View style={styles.dividerContainer}>
         <Text style={styles.dividerText}>SNS로 로그인하기</Text>
       </View>

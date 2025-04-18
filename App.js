@@ -63,7 +63,7 @@ export default function App() {
           </View>
         </Modal>
 
-              {/* ✅ 회원가입 모달 */}
+        {/* ✅ 회원가입 모달 */}
         <Modal
           animationType="slide"
           transparent={true}
@@ -75,7 +75,6 @@ export default function App() {
               <SignUpForm
                 closeModal={() => setShowSignUpModal(false)}
               />
-              <Button title="닫기" onPress={closeModal} color="red" />
             </View>
           </View>
         </Modal>

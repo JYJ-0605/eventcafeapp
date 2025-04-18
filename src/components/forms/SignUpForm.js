@@ -9,9 +9,9 @@ import {
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import IconButton from "../common/IconButton";
-import AuthModalManager from "../Modal/AuthModalManager";
 
-const SignUpForm = () => {
+
+const SignUpForm = ({ closeModal, openLoginModal }) => {
   const navigation = useNavigation();
 
   const [email, setEmail] = useState("");
@@ -35,10 +35,12 @@ const SignUpForm = () => {
   }, [showEmailVerification, timer]);
 
   const formatTime = (seconds) => {
+    if (typeof seconds !== "number" || isNaN(seconds)) return "0:00"; // 보호 코드
     const minutes = Math.floor(seconds / 60);
     const secs = seconds % 60;
     return `${minutes}:${secs < 10 ? `0${secs}` : secs}`;
   };
+  
 
   const handleSignup = () => {
     if (password !== confirmPassword) {
@@ -61,14 +63,15 @@ const SignUpForm = () => {
   };
 
   const handleGoToLogin = () => {
-    navigation.navigate("LoginForm");
+    closeModal();         // 회원가입 모달 닫고
+    openLoginModal();     // ✅ props로 받은 걸 실행
   };
 
   return (
     <View style={styles.overlay}>
       <View style={styles.modalBox}>
         <View style={styles.header}>
-          <IconButton icon="angle-left" onPress={closeModal}/> {/* 이건 로그인은 안 닫고 회원가입만 닫음 */}
+          <IconButton icon="angle-left" onPress={handleGoToLogin}/> 
           <Text style={styles.title}>회원가입</Text>
         </View>
 
@@ -82,7 +85,6 @@ const SignUpForm = () => {
         <TouchableOpacity style={styles.buttonOutline} onPress={handleSendVerification}>
           <Text style={styles.buttonOutlineText}>인증</Text>
         </TouchableOpacity>
-
         {showEmailVerification && (
           <View>
             <TextInput
@@ -91,12 +93,9 @@ const SignUpForm = () => {
               value={code}
               onChangeText={setCode}
             />
-            <Text style={styles.timerText}>
-              {timer > 0 ? `남은 시간: ${formatTime(timer)}` : "인증 시간이 만료되었습니다."}
-            </Text>
+            <Text style={styles.timerText}>{timer > 0 ? `남은 시간: ${formatTime(timer)}` : "인증 시간이 만료되었습니다."}</Text>
           </View>
-        )}
-
+          )}
         <TextInput
           style={styles.input}
           placeholder="비밀번호"
@@ -130,14 +129,16 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "rgba(0,0,0,0.5)", // 반투명 배경
     justifyContent: "center",
-    alignItems: "center",
+    alignItems: "center", // ✅ 핵심 변경!
+    width: '125%',
   },
   modalBox: {
     backgroundColor: "#fff",
     borderRadius: 10,
     padding: 20,
-    width: "85%",
-    maxWidth: 360,
+    height: 400,
+    width: "95%",
+    maxWidth: 600,
     elevation: 5, // 그림자 효과
   },
   header: {

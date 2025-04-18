@@ -4,14 +4,13 @@ import LoginForm from '../forms/LoginForm';
 import SignUpForm from '../forms/SignUpForm';
 
 const AuthModalManager = () => {
-  const [showLoginModal, setShowLoginModal] = useState(false);
+  const [modalVisible, setModalVisible] = useState(false); //로그인 로직 겹쳐서 수정 4/15
   const [showSignUpModal, setShowSignUpModal] = useState(false);
 
   return (
-    <>
-      {showLoginModal && (
+    <>{modalVisible && (
         <LoginForm
-          closeModal={() => setShowLoginModal(false)}
+          closeModal={() => setModalVisible(false)}
           openSignUpModal={() => setShowSignUpModal(true)}
         />
       )}
