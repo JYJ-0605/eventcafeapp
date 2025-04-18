@@ -1,0 +1,60 @@
+name: CI Pipeline (React Native + Django)
+
+on:
+  push:
+    branches: [master]
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repo
+      uses: actions/checkout@v2
+
+    # 📦 Node.js & 앱 의존성 설치 (React Native)
+    - name: Set up Node
+      uses: actions/setup-node@v3
+      with:
+        node-version: '18'
+
+    - name: Install Node dependencies
+      run: npm ci
+
+    # 📱 Android SDK 설정 + APK 빌드
+    - name: Install Android SDK & build APK
+      uses: reactivecircus/android-emulator-runner@v2
+      with:
+        api-level: 30
+        target: default
+        arch: x86_64
+        script: |
+          cd android
+          ./gradlew assembleRelease
+
+    - name: Upload APK
+      uses: actions/upload-artifact@v2
+      with:
+        name: rn-app
+        path: android/app/build/outputs/apk/release/app-release.apk
+
+    # 🐍 Python 세팅 & Django 배포
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: '3.10'
+
+    - name: Install Python dependencies
+      run: |
+        pip install -r requirements.txt
+
+    - name: Deploy Django Backend to EC2
+      run: |
+        ssh ubuntu@your-ec2 "
+          cd /var/www/html &&
+          git pull &&
+          source venv/bin/activate &&
+          python manage.py migrate &&
+          sudo systemctl restart gunicorn &&
+          sudo systemctl restart nginx
+        "
