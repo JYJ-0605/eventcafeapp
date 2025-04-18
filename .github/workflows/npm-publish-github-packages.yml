@@ -46,7 +46,7 @@ jobs:
 
     - name: Deploy Django Backend to EC2
       run: |
-        ssh ubuntu@your-ec2 "
+        ssh ubuntu@ec2-54-180-31-238.ap-northeast-2.compute.amazonaws.com "
           cd /var/www/html &&
           git pull &&
           source venv/bin/activate &&
