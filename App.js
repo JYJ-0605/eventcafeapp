@@ -1,14 +1,18 @@
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, SafeAreaView, Modal, View, Button } from 'react-native';
-import AppNavigator from './src/screens/MainScreen';
+import { StyleSheet, Platform, View, Button } from 'react-native';
+import AppNavigator from './src/navigation/AppNavigator'; // ✅ 새로 연결
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { useState } from 'react';
-import LoginForm from './src/components/forms/LoginForm';
-import SignUpForm from './src/components/forms/SignUpForm';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import AuthModalManager from './src/components/Modal/AuthModalManager';
+
+
+
+
+
 
 const Stack = createStackNavigator();
-
 export default function App() {
   const [modalVisible, setModalVisible] = useState(false); //로그인
   const [showSignUpModal, setShowSignUpModal] = useState(false); //회원가입
@@ -19,54 +23,20 @@ export default function App() {
 
   return (
     <NavigationContainer>
-      <SafeAreaView style={styles.container}>
+       <SafeAreaView style={styles.container}>
+      
         <StatusBar style="auto" />
-        <Stack.Navigator screenOptions={{ headerShown: false }}>
-          {/* MainScreen 내에서 로그인 모달 열기 */}
-          <Stack.Screen name="MainScreen">
-            {({ navigation }) => (
-              <AppNavigator onLoginPress={openModal} navigation={navigation}/>
-            )}
-          </Stack.Screen>
-        </Stack.Navigator>
+        <AppNavigator onLoginPress={() => setModalVisible(true)} />
 
-        {/* 로그인 모달을 별도의 스크린처럼 다룰 수 있도록 수정 */}
-        <Modal
-          animationType="slide"
-          transparent={true}
-          visible={modalVisible}
-          onRequestClose={closeModal}
-        >
-          <View style={styles.modalContainer}>
-            <View style={styles.modalContent}>
-            <LoginForm
-                closeModal={() => setModalVisible(false)}
-                openSignUpModal={() => {
-                setModalVisible(false);
-                  setShowSignUpModal(true); // ✅ 회원가입 모달 열기
-                }}
-                navigation={null}
-              />
-              </View>
-          </View>
-        </Modal>
+        {/* 모달 상태들은 별도 컴포넌트로 넘김 */}
+        <AuthModalManager
+          modalVisible={modalVisible}
+          setModalVisible={setModalVisible}
+          showSignUpModal={showSignUpModal}
+          setShowSignUpModal={setShowSignUpModal}
+        />
 
-        {/* ✅ 회원가입 모달 */}
-             
-        <Modal
-          animationType="slide"
-          transparent={true}
-          visible={showSignUpModal}
-          onRequestClose={() => setShowSignUpModal(false)}
-        ><View style={styles.modalContainer}>
-            <View style={styles.modalContent}>
-              <SignUpForm
-                closeModal={() => setShowSignUpModal(false)}
-                openLoginModal={() => setModalVisible(true)}
-              />
-            </View>
-          </View>
-        </Modal>
+      
       </SafeAreaView>
     </NavigationContainer>
   );
@@ -75,6 +45,7 @@ export default function App() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    paddingTop: Platform.OS === 'android' ? StatusBar.currentHeight : 0,
     backgroundColor: '#DFF9F8',
   },
   modalContainer: {

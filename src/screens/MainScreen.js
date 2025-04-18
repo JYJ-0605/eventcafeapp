@@ -1,11 +1,13 @@
 import React from 'react';
-import { ScrollView, StyleSheet, View } from 'react-native';
+import { ScrollView, StyleSheet, View, TouchableOpacity, Text } from 'react-native';
 import Header from '../components/common/Header';
 import SearchBar from '../components/common/SearchBar';
 import IconButton from '../components/common/IconButton';
 import Card from '../components/common/Card';
+import { FontAwesome } from '@expo/vector-icons'; // 아이콘 라이브러리 꼭 있어야 함
 
-const MainScreen = ({ onLoginPress }) => {
+const MainScreen = ({ onLoginPress, navigation }) => {
+
 
   const images = [
     require('../../assets/banner/banner_sample1.jpg'),
@@ -14,6 +16,7 @@ const MainScreen = ({ onLoginPress }) => {
   ];
 
   return (
+   
     <ScrollView style={styles.container}>
       {/* Header에 onLoginPress 전달 */}
       <Header onLoginPress={onLoginPress} />
@@ -22,18 +25,39 @@ const MainScreen = ({ onLoginPress }) => {
 
       </View>
       <View style={styles.iconRow}>
-        <IconButton icon="fire" text="인기 카페 이벤트" />
-        <IconButton icon="calendar-check-o" text="캘린더"/>
-        <IconButton icon="comments" text="게시판" />
+        <TouchableOpacity onPress={() => {navigation.navigate("PopularCafe");}}>
+            <View style={styles.iconRow}>
+              <FontAwesome name="fire" size={24} color="pink" />
+            </View>
+            <Text>인기 카페 이벤트</Text>
+        </TouchableOpacity>
+        <TouchableOpacity onPress={() => {navigation.navigate("Calendar");}}>
+            <View style={styles.iconRow}>
+              <FontAwesome name="calendar-check-o" size={24} color="pink" />
+            </View>
+            <Text>캘린더</Text>
+        </TouchableOpacity>
+        <TouchableOpacity onPress={() => {navigation.navigate("Board");}}>
+            <View style={styles.iconRow}>
+              <FontAwesome name="comments" size={24} color="pink" />
+            </View>
+            <Text>게시판</Text>
+        </TouchableOpacity>
       </View>
-      <View style={styles.iconRow}>
-        <IconButton icon="map-marker" text="장소 등록" />
+      <View style={styles.iconRow}> 
+      <TouchableOpacity onPress={() => {navigation.navigate("PlaceSelect");}}>
+            <View style={styles.iconRow}>
+              <FontAwesome name="map-marker" size={24} color="pink" />
+            </View>
+            <Text>장소 등록</Text>
+        </TouchableOpacity> coffee
         <IconButton icon="coffee" text="장소 대관" />
         <IconButton icon="birthday-cake" text="이벤트 등록" />
       </View>
       <Card title="인기 카페 이벤트" />
       <Card title="대관 가능한 장소" />
     </ScrollView>
+   
   );
 };
 

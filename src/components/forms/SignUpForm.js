@@ -11,6 +11,8 @@ import { useNavigation } from "@react-navigation/native";
 import IconButton from "../common/IconButton";
 
 
+
+
 const SignUpForm = ({ closeModal, openLoginModal }) => {
   const navigation = useNavigation();
 
@@ -64,13 +66,11 @@ const SignUpForm = ({ closeModal, openLoginModal }) => {
 
   const handleGoToLogin = () => {
     closeModal();         // 회원가입 모달 닫고
-    
-      if (typeof openLoginModal === 'function') {
-        openLoginModal();
-      } else {
-        console.warn('openLoginModal is undefined or not a function');
-      }
-    
+    if (typeof openLoginModal === 'function') {
+     openLoginModal();
+    } else {
+      console.warn('openLoginModal is undefined or not a function');
+    }
   };
 
   return (

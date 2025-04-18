@@ -1,18 +1,142 @@
-// 장소 선택 화면
-import React from "react";
-import { View, Text, TextInput, TouchableOpacity } from "react-native";
+// PlaceSelectionScreen.js
+import React, { useState } from "react";
+import { View, Text, TextInput, TouchableOpacity, StyleSheet, ScrollView } from "react-native";
+
+const categories = ["카페", "음식점", "전시회", "포토부스", "파티룸"];
 
 const PlaceSelectionScreen = ({ navigation }) => {
-  return (
-    <View style={{ flex: 1, padding: 20, backgroundColor: "#E3F7F7" }}>
-      <Text style={{ fontSize: 18, fontWeight: "bold", marginBottom: 10 }}>장소 선택</Text>
-      <TextInput placeholder="장소 검색" style={{ backgroundColor: "white", padding: 12, borderRadius: 8, marginBottom: 20 }} />
+  const [selectedCategory, setSelectedCategory] = useState(null);
 
-      <TouchableOpacity onPress={() => navigation.navigate("Main")} style={{ padding: 12, backgroundColor: "#FFB6C1", borderRadius: 8 }}>
-        <Text style={{ color: "white", fontSize: 16 }}>다음</Text>
+  return (
+    <ScrollView style={styles.container}>
+      <Text style={styles.title}>장소 등록</Text>
+
+      <TextInput style={styles.input} placeholder="장소명 *" />
+      <TextInput style={styles.input} placeholder="지역 *" />
+      <View style={styles.addressRow}>
+        <TextInput style={[styles.input, { flex: 1 }]} placeholder="주소 *" />
+        <TouchableOpacity style={styles.findAddressButton}>
+          <Text style={styles.findAddressText}>주소 찾기</Text>
+        </TouchableOpacity>
+      </View>
+
+      <Text style={styles.sectionTitle}>장소의 타입을 선택해 주세요 (필수)</Text>
+      <View style={styles.categoryRow}>
+        {categories.map((cat) => (
+          <TouchableOpacity
+            key={cat}
+            style={[
+              styles.categoryBtn,
+              selectedCategory === cat && styles.categorySelected,
+            ]}
+            onPress={() => setSelectedCategory(cat)}
+          >
+            <Text>{cat}</Text>
+          </TouchableOpacity>
+        ))}
+      </View>
+
+      <Text style={styles.sectionTitle}>가게 메인 이미지 (필수)</Text>
+      <TouchableOpacity style={styles.uploadBtn}>
+        <Text>파일 선택</Text>
       </TouchableOpacity>
-    </View>
+
+      <TextInput style={styles.input} placeholder="대관료 (₩) *" keyboardType="numeric" />
+      <TextInput style={styles.input} placeholder="예약금 (₩) *" keyboardType="numeric" />
+      <TextInput style={styles.input} placeholder="운영 정보" multiline />
+      <TextInput style={styles.input} placeholder="운영 시간 *" />
+
+      <Text style={styles.sectionTitle}>특전 배치 혹은 예시 이미지</Text>
+      <TouchableOpacity style={styles.uploadBtn}>
+        <Text>파일 선택</Text>
+      </TouchableOpacity>
+
+      <TextInput
+        style={[styles.input, { height: 100 }]}
+        placeholder="소개글"
+        multiline
+      />
+
+      <Text style={styles.sectionTitle}>SNS 아이디</Text>
+      <TextInput style={styles.input} placeholder="예: @instagram" />
+
+      <TouchableOpacity style={styles.registerBtn} onPress={() => navigation.goBack()}>
+        <Text style={styles.registerText}>등록하기</Text>
+      </TouchableOpacity>
+    </ScrollView>
   );
 };
+
+const styles = StyleSheet.create({
+  container: {
+    backgroundColor: "#E3F7F7",
+    padding: 20,
+  },
+  title: {
+    fontSize: 22,
+    fontWeight: "bold",
+    marginBottom: 16,
+  },
+  input: {
+    backgroundColor: "#fff",
+    padding: 12,
+    borderRadius: 8,
+    marginBottom: 12,
+  },
+  addressRow: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 10,
+  },
+  findAddressButton: {
+    backgroundColor: "#cce5ff",
+    paddingHorizontal: 12,
+    paddingVertical: 10,
+    borderRadius: 6,
+  },
+  findAddressText: {
+    color: "#333",
+  },
+  sectionTitle: {
+    fontWeight: "bold",
+    marginTop: 16,
+    marginBottom: 8,
+  },
+  categoryRow: {
+    flexDirection: "row",
+    flexWrap: "wrap",
+    gap: 8,
+    marginBottom: 16,
+  },
+  categoryBtn: {
+    paddingHorizontal: 12,
+    paddingVertical: 6,
+    backgroundColor: "#fff",
+    borderRadius: 6,
+    borderColor: "#aaa",
+    borderWidth: 1,
+  },
+  categorySelected: {
+    backgroundColor: "#FFB6C1",
+  },
+  uploadBtn: {
+    backgroundColor: "#fff",
+    padding: 12,
+    borderRadius: 8,
+    alignItems: "center",
+    marginBottom: 12,
+  },
+  registerBtn: {
+    backgroundColor: "#007bff",
+    padding: 15,
+    borderRadius: 8,
+    alignItems: "center",
+    marginTop: 20,
+  },
+  registerText: {
+    color: "#fff",
+    fontWeight: "bold",
+  },
+});
 
 export default PlaceSelectionScreen;
