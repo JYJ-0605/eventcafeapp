@@ -1,4 +1,4 @@
-// PlaceSelectionScreen.js
+// 장소 등록
 import React, { useState } from "react";
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, ScrollView } from "react-native";
 
@@ -14,11 +14,15 @@ const PlaceSelectionScreen = ({ navigation }) => {
       <TextInput style={styles.input} placeholder="장소명 *" />
       <TextInput style={styles.input} placeholder="지역 *" />
       <View style={styles.addressRow}>
-        <TextInput style={[styles.input, { flex: 1 }]} placeholder="주소 *" />
+        <TextInput
+          style={styles.addressInput}
+          placeholder="주소 *"
+        />
         <TouchableOpacity style={styles.findAddressButton}>
           <Text style={styles.findAddressText}>주소 찾기</Text>
         </TouchableOpacity>
       </View>
+
 
       <Text style={styles.sectionTitle}>장소의 타입을 선택해 주세요 (필수)</Text>
       <View style={styles.categoryRow}>
@@ -86,13 +90,23 @@ const styles = StyleSheet.create({
   addressRow: {
     flexDirection: "row",
     alignItems: "center",
+    marginBottom: 12,
     gap: 10,
+  },
+  addressInput: {
+    flex: 1,
+    backgroundColor: "#fff",
+    paddingHorizontal: 12,
+    height: 48,
+    borderRadius: 8,
   },
   findAddressButton: {
     backgroundColor: "#cce5ff",
-    paddingHorizontal: 12,
-    paddingVertical: 10,
-    borderRadius: 6,
+    height: 48,
+    paddingHorizontal: 16,
+    borderRadius: 8,
+    justifyContent: "center",
+    alignItems: "center",
   },
   findAddressText: {
     color: "#333",

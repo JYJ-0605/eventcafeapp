@@ -6,10 +6,8 @@ import logo from '../../../assets/logo.png';
 
 const Header = ({ onLoginPress, onIconPress }) => (
   <View style={styles.container}>
-    {/* 로고 이미지 */}
     <Image source={logo} style={styles.logo} />
 
-    {/* 아이콘 + 로그인 텍스트 */}
     <View style={styles.loginContainer}>
       <TouchableOpacity onPress={onIconPress}>
         <FontAwesome name="user-plus" size={20} color="#007bff" style={styles.icon} />

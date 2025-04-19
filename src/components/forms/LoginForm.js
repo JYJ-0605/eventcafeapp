@@ -89,6 +89,9 @@ const LoginForm = ({ closeModal, openSignUpModal }) => {
           <FontAwesome name="envelope" size={24} style={styles.icon} color="#757575" />
           <Text style={styles.naverButtonText}>네이버로 로그인</Text>
         </TouchableOpacity>
+        <TouchableOpacity onPress={closeModal}>
+          <Text style={styles.closeText}>닫기</Text>
+        </TouchableOpacity>
       </View>
     </View>
   );
@@ -98,7 +101,7 @@ const styles = StyleSheet.create({
   container: {
     height: "80%",
     justifyContent: "center",
-    paddingTop: 5,
+    paddingTop: 70,
     alignItems: "center",
   },
   logoContainer: {
@@ -195,6 +198,13 @@ const styles = StyleSheet.create({
     fontSize: 13,
     marginLeft: 8,
   },
+  closeText: {
+    marginTop: 12,
+    fontSize: 15,
+    color: '#007BFF',
+    textAlign: 'center',
+    fontWeight: '600',
+  },  
   icon: {
     marginRight: 8,
   },
