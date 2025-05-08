@@ -23,7 +23,7 @@
   import InputBirthEventInfo from '../screens/EventRegister/InputBirthEventInfo';
   import InputCollabEventInfo from '../screens/EventRegister/InputCollabEventInfo';
   import EventInfoSubmitScreen from '../screens/EventRegister/EventInfoSubmitScreen';
-
+  import DictionaryList from '../screens/Dictionary/DictionaryList'; // 덕질 사전 화면
 
   const Stack = createStackNavigator();
 
@@ -44,6 +44,9 @@
         {/* 아티스트 구독 */}
         <Stack.Screen name="SubscribeArtist" component={SubscribeArtistScreen} options={{ title: '아티스트 구독', headerBackTitleVisible: false, headerBackTitle: "" }} />
         <Stack.Screen name="ArtistDetail" component={ArtistDetailScreen} options={{ title: '아티스트 상세 페이지', headerBackTitleVisible: false, headerBackTitle: "" }}/>
+        
+        {/* 덕질 사전 */}
+        <Stack.Screen name="DictionaryList" component={DictionaryList} options={{ title: '덕질 사전', headerBackTitleVisible: false, headerBackTitle: "" }} />
         
         {/* 인기 카페 이벤트 */}
         <Stack.Screen name="PopularCafe" component={PopularCafeScreen} options={{ title: '인기 카페 이벤트', headerBackTitleVisible: false, headerBackTitle: "" }} />

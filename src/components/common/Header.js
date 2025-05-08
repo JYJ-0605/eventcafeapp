@@ -4,11 +4,14 @@ import { View, Image, TouchableOpacity, Text, StyleSheet } from 'react-native';
 import { FontAwesome } from '@expo/vector-icons';
 import logo from '../../../assets/logo.png';
 
-const Header = ({ onLoginPress, onIconPress }) => (
+const Header = ({ onLoginPress, onIconPress, onBookPress }) => (
   <View style={styles.container}>
     <Image source={logo} style={styles.logo} />
 
     <View style={styles.loginContainer}>
+      <TouchableOpacity onPress={onBookPress}>
+        <FontAwesome name="book" size={20} color="#007bff" style={styles.icon} /> 
+      </TouchableOpacity>
       <TouchableOpacity onPress={onIconPress}>
         <FontAwesome name="user-plus" size={20} color="#007bff" style={styles.icon} />
       </TouchableOpacity>

@@ -1,7 +1,10 @@
 import React from 'react';
-import { View, Text, Image, ScrollView, Alert, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, Text, Image, ScrollView, StyleSheet, TouchableOpacity } from 'react-native';
+import { useNavigation } from '@react-navigation/native'; // ✅ 추가
 
 const PlaceDetailScreen = ({ route }) => {
+  const navigation = useNavigation(); // ✅ 현재 navigation 객체 얻기
+
   const {
     name,
     region,
@@ -17,7 +20,7 @@ const PlaceDetailScreen = ({ route }) => {
   } = route.params;
 
   const handleReservePress = () => {
-    Alert.alert('대관 신청', '대관 신청 버튼이 눌렸습니다!');
+    navigation.navigate('PlaceReservation'); // ✅ navigation 객체로 이동
   };
 
   return (

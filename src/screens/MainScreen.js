@@ -60,6 +60,7 @@ const MainScreen = ({ onLoginPress, navigation }) => {
       <Header
         onLoginPress={onLoginPress}
         onIconPress={() => navigation.navigate('SubscribeArtist')}
+        onBookPress={() => navigation.navigate('DictionaryList')}
       />
       <SearchBar />
 
