@@ -1,18 +1,18 @@
+import { FontAwesome } from '@expo/vector-icons';
 import React from 'react';
 import {
+  Dimensions,
+  Image,
   ScrollView,
   StyleSheet,
-  View,
-  TouchableOpacity,
   Text,
-  Image,
-  Dimensions,
+  TouchableOpacity,
+  View,
 } from 'react-native';
+import Swiper from 'react-native-swiper';
+import Card from '../components/Card/Card';
 import Header from '../components/common/Header';
 import SearchBar from '../components/common/SearchBar';
-import Card from '../components/Card/Card';
-import { FontAwesome } from '@expo/vector-icons';
-import Swiper from 'react-native-swiper';
 
 const { width } = Dimensions.get('window');
 
@@ -77,7 +77,11 @@ const MainScreen = ({ onLoginPress, navigation }) => {
         >
           {images.map((img, index) => (
             <View key={index} style={styles.slide}>
-              <Image source={img} style={styles.posterImage} resizeMode="contain" />
+              <Image
+                source={img}
+                style={styles.posterImage}
+                resizeMode="contain"
+              />
             </View>
           ))}
         </Swiper>
@@ -85,15 +89,24 @@ const MainScreen = ({ onLoginPress, navigation }) => {
 
       {/* 아이콘 줄 1 */}
       <View style={styles.iconRow}>
-        <TouchableOpacity style={styles.iconButton} onPress={() => navigation.navigate('PopularCafe')}>
+        <TouchableOpacity
+          style={styles.iconButton}
+          onPress={() => navigation.navigate('PopularCafe')}
+        >
           <FontAwesome name="fire" size={24} color="pink" />
           <Text style={styles.iconText}>인기 카페 이벤트</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.iconButton} onPress={() => navigation.navigate('Calendar')}>
+        <TouchableOpacity
+          style={styles.iconButton}
+          onPress={() => navigation.navigate('Calendar')}
+        >
           <FontAwesome name="calendar-check-o" size={24} color="pink" />
           <Text style={styles.iconText}>캘린더</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.iconButton} onPress={() => navigation.navigate('Board')}>
+        <TouchableOpacity
+          style={styles.iconButton}
+          onPress={() => navigation.navigate('Board')}
+        >
           <FontAwesome name="comments" size={24} color="pink" />
           <Text style={styles.iconText}>게시판</Text>
         </TouchableOpacity>
@@ -101,15 +114,24 @@ const MainScreen = ({ onLoginPress, navigation }) => {
 
       {/* 아이콘 줄 2 */}
       <View style={styles.iconRow}>
-        <TouchableOpacity style={styles.iconButton} onPress={() => navigation.navigate('EventRegister')}>
+        <TouchableOpacity
+          style={styles.iconButton}
+          onPress={() => navigation.navigate('EventRegister')}
+        >
           <FontAwesome name="birthday-cake" size={24} color="pink" />
           <Text style={styles.iconText}>이벤트 등록</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.iconButton} onPress={() => navigation.navigate('CafeRegister')}>
+        <TouchableOpacity
+          style={styles.iconButton}
+          onPress={() => navigation.navigate('CafeRegister')}
+        >
           <FontAwesome name="map-marker" size={24} color="pink" />
           <Text style={styles.iconText}>장소 등록</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.iconButton} onPress={() => navigation.navigate('ReservablePlacesList')}>
+        <TouchableOpacity
+          style={styles.iconButton}
+          onPress={() => navigation.navigate('ReservablePlacesList')}
+        >
           <FontAwesome name="coffee" size={24} color="pink" />
           <Text style={styles.iconText}>대관 신청</Text>
         </TouchableOpacity>

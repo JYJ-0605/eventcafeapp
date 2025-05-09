@@ -1,11 +1,21 @@
 // 대관 신청
-import React, { useState } from "react";
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, ScrollView } from "react-native";
+import React, { useState } from 'react';
+import {
+  ScrollView,
+  StyleSheet,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View,
+} from 'react-native';
+import AddressSearch from '../../components/common/AddressSearch';
 
-const categories = ["카페", "음식점", "전시회", "포토부스", "파티룸"];
+const categories = ['카페', '음식점', '전시회', '포토부스', '파티룸'];
 
 const PlaceReservationScreen = ({ navigation }) => {
   const [selectedCategory, setSelectedCategory] = useState(null);
+  const [address, setAddress] = useState('');
+  const [showAddressSearch, setShowAddressSearch] = useState(false);
 
   return (
     <ScrollView style={styles.container}>
@@ -17,14 +27,29 @@ const PlaceReservationScreen = ({ navigation }) => {
         <TextInput
           style={styles.addressInput}
           placeholder="주소 *"
+          value={address}
+          editable={false} // 검색된 주소만 입력되게 하고 싶다면
         />
-        <TouchableOpacity style={styles.findAddressButton}>
+        <TouchableOpacity
+          style={styles.findAddressButton}
+          onPress={() => setShowAddressSearch(true)} // 모달 또는 네비게이션 이동
+        >
           <Text style={styles.findAddressText}>주소 찾기</Text>
         </TouchableOpacity>
       </View>
 
+      {showAddressSearch && (
+        <AddressSearch
+          onAddressSelected={(addr) => {
+            setAddress(addr);
+            setShowAddressSearch(false);
+          }}
+        />
+      )}
 
-      <Text style={styles.sectionTitle}>장소의 타입을 선택해 주세요 (필수)</Text>
+      <Text style={styles.sectionTitle}>
+        장소의 타입을 선택해 주세요 (필수)
+      </Text>
       <View style={styles.categoryRow}>
         {categories.map((cat) => (
           <TouchableOpacity
@@ -45,8 +70,16 @@ const PlaceReservationScreen = ({ navigation }) => {
         <Text>파일 선택</Text>
       </TouchableOpacity>
 
-      <TextInput style={styles.input} placeholder="대관료 (₩) *" keyboardType="numeric" />
-      <TextInput style={styles.input} placeholder="예약금 (₩) *" keyboardType="numeric" />
+      <TextInput
+        style={styles.input}
+        placeholder="대관료 (₩) *"
+        keyboardType="numeric"
+      />
+      <TextInput
+        style={styles.input}
+        placeholder="예약금 (₩) *"
+        keyboardType="numeric"
+      />
       <TextInput style={styles.input} placeholder="운영 정보" multiline />
       <TextInput style={styles.input} placeholder="운영 시간 *" />
 
@@ -64,7 +97,10 @@ const PlaceReservationScreen = ({ navigation }) => {
       <Text style={styles.sectionTitle}>SNS 아이디</Text>
       <TextInput style={styles.input} placeholder="예: @instagram" />
 
-      <TouchableOpacity style={styles.registerBtn} onPress={() => navigation.goBack()}>
+      <TouchableOpacity
+        style={styles.registerBtn}
+        onPress={() => navigation.goBack()}
+      >
         <Text style={styles.registerText}>등록하기</Text>
       </TouchableOpacity>
     </ScrollView>
@@ -73,83 +109,83 @@ const PlaceReservationScreen = ({ navigation }) => {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: "#E3F7F7",
+    backgroundColor: '#E3F7F7',
     padding: 20,
   },
   title: {
     fontSize: 22,
-    fontWeight: "bold",
+    fontWeight: 'bold',
     marginBottom: 16,
   },
   input: {
-    backgroundColor: "#fff",
+    backgroundColor: '#fff',
     padding: 12,
     borderRadius: 8,
     marginBottom: 12,
   },
   addressRow: {
-    flexDirection: "row",
-    alignItems: "center",
+    flexDirection: 'row',
+    alignItems: 'center',
     marginBottom: 12,
     gap: 10,
   },
   addressInput: {
     flex: 1,
-    backgroundColor: "#fff",
+    backgroundColor: '#fff',
     paddingHorizontal: 12,
     height: 48,
     borderRadius: 8,
   },
   findAddressButton: {
-    backgroundColor: "#cce5ff",
+    backgroundColor: '#cce5ff',
     height: 48,
     paddingHorizontal: 16,
     borderRadius: 8,
-    justifyContent: "center",
-    alignItems: "center",
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   findAddressText: {
-    color: "#333",
+    color: '#333',
   },
   sectionTitle: {
-    fontWeight: "bold",
+    fontWeight: 'bold',
     marginTop: 16,
     marginBottom: 8,
   },
   categoryRow: {
-    flexDirection: "row",
-    flexWrap: "wrap",
+    flexDirection: 'row',
+    flexWrap: 'wrap',
     gap: 8,
     marginBottom: 16,
   },
   categoryBtn: {
     paddingHorizontal: 12,
     paddingVertical: 6,
-    backgroundColor: "#fff",
+    backgroundColor: '#fff',
     borderRadius: 6,
-    borderColor: "#aaa",
+    borderColor: '#aaa',
     borderWidth: 1,
   },
   categorySelected: {
-    backgroundColor: "#FFB6C1",
+    backgroundColor: '#FFB6C1',
   },
   uploadBtn: {
-    backgroundColor: "#fff",
+    backgroundColor: '#fff',
     padding: 12,
     borderRadius: 8,
-    alignItems: "center",
+    alignItems: 'center',
     marginBottom: 12,
   },
   registerBtn: {
-    backgroundColor: "#007bff",
+    backgroundColor: '#007bff',
     padding: 15,
     borderRadius: 8,
-    alignItems: "center",
+    alignItems: 'center',
     marginTop: 20,
   },
   registerText: {
-    color: "#fff",
-    fontWeight: "bold",
+    color: '#fff',
+    fontWeight: 'bold',
   },
 });
 

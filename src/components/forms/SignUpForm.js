@@ -23,6 +23,9 @@ const SignUpForm = ({ closeModal, openLoginModal }) => {
   const [code, setCode] = useState('');
   const [username, setUsername] = useState('');
   const [nickname, setNickname] = useState('');
+  const [nicknameChecked, setNicknameChecked] = useState(false);
+  const [nicknameMessage, setNicknameMessage] = useState('');
+
   useEffect(() => {
     let timerInterval;
     if (showEmailVerification && timer > 0) {
@@ -43,6 +46,10 @@ const SignUpForm = ({ closeModal, openLoginModal }) => {
   };
 
   const handleSignup = async () => {
+    if (!nicknameChecked) {
+      Alert.alert('오류', '닉네임 중복 확인을 먼저 해주세요.');
+      return;
+    }
     if (password !== confirmPassword) {
       Alert.alert('오류', '비밀번호가 일치하지 않습니다.');
       return;
@@ -51,14 +58,7 @@ const SignUpForm = ({ closeModal, openLoginModal }) => {
       Alert.alert('오류', '이메일 인증을 완료해주세요.');
       return;
     }
-    console.log('회원가입 요청', {
-      email,
-      password,
-      code,
-      username,
-      nickname,
-      user_type,
-    });
+
     try {
       const response = await axios.post(
         'https://eventcafe.site/user/auth/register/',
@@ -67,7 +67,7 @@ const SignUpForm = ({ closeModal, openLoginModal }) => {
           nickname,
           email,
           password,
-          user_type: regular,
+          user_type: 'regular',
         }
       );
 
@@ -145,17 +145,21 @@ const SignUpForm = ({ closeModal, openLoginModal }) => {
         { nickname }
       );
 
-      if (response.data.available) {
-        setNicknameChecked(true);
-        setNicknameMessage(response.data.message);
+      const { available, message } = response.data;
+
+      setNicknameChecked(available);
+      setNicknameMessage(message);
+
+      if (available) {
+        Alert.alert('✅ 사용 가능한 닉네임입니다!');
       } else {
-        setNicknameChecked(false);
-        setNicknameMessage(response.data.message);
+        Alert.alert('❌ 이미 사용 중인 닉네임입니다.');
       }
     } catch (error) {
       console.error('닉네임 중복 확인 실패:', error.response?.data);
       setNicknameChecked(false);
       setNicknameMessage('중복 확인 실패. 다시 시도하세요.');
+      Alert.alert('❌ 닉네임 중복 확인 중 오류가 발생했습니다.');
     }
   };
 
@@ -187,7 +191,7 @@ const SignUpForm = ({ closeModal, openLoginModal }) => {
           style={styles.buttonOutline}
           onPress={handleSendVerification}
         >
-          <Text style={styles.buttonOutlineText}>인증</Text>
+          <Text style={styles.buttonOutlineText}>인증 코드 전송</Text>
         </TouchableOpacity>
         {showEmailVerification && (
           <View>
@@ -202,6 +206,12 @@ const SignUpForm = ({ closeModal, openLoginModal }) => {
                 ? `남은 시간: ${formatTime(timer)}`
                 : '인증 시간이 만료되었습니다.'}
             </Text>
+            <TouchableOpacity
+              style={styles.buttonOutline}
+              onPress={handleVerifyCode}
+            >
+              <Text style={styles.buttonOutlineText}>인증</Text>
+            </TouchableOpacity>
           </View>
         )}
         <TextInput
@@ -225,10 +235,14 @@ const SignUpForm = ({ closeModal, openLoginModal }) => {
           onChangeText={setUsername}
         />
         <TextInput
+          value={nickname}
+          onChangeText={(text) => {
+            setNickname(text);
+            setNicknameChecked(false);
+            setNicknameMessage('');
+          }}
           style={styles.input}
           placeholder="닉네임"
-          value={nickname}
-          onChangeText={setNickname}
         />
         <TouchableOpacity
           style={styles.buttonOutline}

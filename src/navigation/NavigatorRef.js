@@ -10,4 +10,4 @@ export function navigate(name, params) {
   }
 }
 
-// App.js 등에서 NavigationContainer 아래에 이거 추가
+// 전역 navigator

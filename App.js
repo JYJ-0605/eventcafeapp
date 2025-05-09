@@ -1,6 +1,5 @@
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
-import { StatusBar } from 'expo-status-bar';
 import { useState } from 'react';
 import { StyleSheet } from 'react-native';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
@@ -20,7 +19,6 @@ export default function App() {
       <SafeAreaProvider>
         <NavigationContainer ref={navigationRef}>
           <SafeAreaView style={styles.container}>
-            <StatusBar style="auto" />
             <AppNavigator onLoginPress={() => setModalVisible(true)} />
             <AuthModalManager
               modalVisible={modalVisible}

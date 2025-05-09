@@ -1,29 +1,29 @@
   // AppNavigator.js
-  import React from 'react';
   import { createStackNavigator } from '@react-navigation/stack';
-  import MainScreen from '../screens/MainScreen';
-  import LoginScreen from '../screens/LoginScreen'; // 로그인 화면
-  import SignUpScreen from '../screens/SignUpScreen'; // 회원가입 화면
-  import CafeRegisterScreen from '../screens/CafeRegister/CafeRegisterScreen'; // 장소 등록 화면
-  import PopularCafeScreen from '../screens/PopularCafeScreen';
-  import CalendarScreen from '../screens/Calendar/CalendarScreen';
-  import BoardScreen from '../screens/Board/BoardScreen';
-  import PostScreen from '../screens/Board/PostScreen';
-  import SubscribeArtistScreen from '../screens/Subscribe/SubscribeArtistScreen';
-  import ArtistDetailScreen from '../screens/Subscribe/ArtistDetailScreen';
-  import PlaceReservationScreen from '../screens/Reservation/PlaceReservationScreen';
-  import ReservablePlacesListScreen from '../screens/Reservation/ReservablePlacesListScreen';
-  import PlaceDetailScreen from '../screens/Reservation/PlaceDetailScreen';
-  import EventRegisterScreen from '../screens/EventRegister/EventRegisterScreen';
-  import StarSearchScreen from '../screens/EventRegister/StarSearchScreen';
-  import SelectedStarScreen from '../screens/EventRegister/SelectedStarScreen';
-  import SelectedDateScreen from '../screens/EventRegister/SelectedDateScreen';
-  import SelectPlaceScreen from '../screens/EventRegister/SelectPlaceScreen';
-  import InputEventInfo from '../screens/EventRegister/InputEventInfo';
-  import InputBirthEventInfo from '../screens/EventRegister/InputBirthEventInfo';
-  import InputCollabEventInfo from '../screens/EventRegister/InputCollabEventInfo';
-  import EventInfoSubmitScreen from '../screens/EventRegister/EventInfoSubmitScreen';
-  import DictionaryList from '../screens/Dictionary/DictionaryList'; // 덕질 사전 화면
+import React from 'react';
+import BoardScreen from '../screens/Board/BoardScreen';
+import PostScreen from '../screens/Board/PostScreen';
+import CafeRegisterScreen from '../screens/CafeRegister/CafeRegisterScreen'; // 장소 등록 화면
+import CalendarScreen from '../screens/Calendar/CalendarScreen';
+import DictionaryList from '../screens/Dictionary/DictionaryList'; // 덕질 사전 화면
+import EventInfoSubmitScreen from '../screens/EventRegister/EventInfoSubmitScreen';
+import EventRegisterScreen from '../screens/EventRegister/EventRegisterScreen';
+import InputBirthEventInfo from '../screens/EventRegister/InputBirthEventInfo';
+import InputCollabEventInfo from '../screens/EventRegister/InputCollabEventInfo';
+import InputEventInfo from '../screens/EventRegister/InputEventInfo';
+import SelectedDateScreen from '../screens/EventRegister/SelectedDateScreen';
+import SelectedStarScreen from '../screens/EventRegister/SelectedStarScreen';
+import SelectPlaceScreen from '../screens/EventRegister/SelectPlaceScreen';
+import StarSearchScreen from '../screens/EventRegister/StarSearchScreen';
+import LoginScreen from '../screens/LoginScreen'; // 로그인 화면
+import MainScreen from '../screens/MainScreen';
+import PopularCafeScreen from '../screens/PopularCafeScreen';
+import PlaceDetailScreen from '../screens/Reservation/PlaceDetailScreen';
+import PlaceReservationScreen from '../screens/Reservation/PlaceReservationScreen';
+import ReservablePlacesListScreen from '../screens/Reservation/ReservablePlacesListScreen';
+import SignUpScreen from '../screens/SignUpScreen'; // 회원가입 화면
+import ArtistDetailScreen from '../screens/Subscribe/ArtistDetailScreen';
+import SubscribeArtistScreen from '../screens/Subscribe/SubscribeArtistScreen';
 
   const Stack = createStackNavigator();
 
@@ -49,7 +49,7 @@
         <Stack.Screen name="DictionaryList" component={DictionaryList} options={{ title: '덕질 사전', headerBackTitleVisible: false, headerBackTitle: "" }} />
         
         {/* 인기 카페 이벤트 */}
-        <Stack.Screen name="PopularCafe" component={PopularCafeScreen} options={{ title: '인기 카페 이벤트', headerBackTitleVisible: false, headerBackTitle: "" }} />
+        <Stack.Screen name="PopularCafe" component={PopularCafeScreen} options={{ title: '인기 카페 이벤트', headerBackTitleVisible: false, headerBackTitle: "" , headerShown: false}} />
         
         {/* 캘린더 */}
         <Stack.Screen name="Calendar" component={CalendarScreen} options={{ title: '캘린더', headerBackTitleVisible: false, headerBackTitle: "" }} />

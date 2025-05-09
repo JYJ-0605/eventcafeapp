@@ -37,7 +37,7 @@ const LoginForm = ({ closeModal, openSignUpModal }) => {
         }
       );
 
-      console.log('👉 이메일:', email, '비밀번호:', password);
+      
       // ✅ 토큰 저장 (AsyncStorage는 비동기!)
       await AsyncStorage.multiSet([
         ['accessToken', data.access],
