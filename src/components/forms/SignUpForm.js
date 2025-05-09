@@ -1,29 +1,28 @@
-import React, { useState, useEffect } from "react";
+import { useNavigation } from '@react-navigation/native';
+import axios from 'axios';
+import React, { useEffect, useState } from 'react';
 import {
-  View,
+  Alert,
+  StyleSheet,
   Text,
   TextInput,
   TouchableOpacity,
-  StyleSheet,
-  Alert,
-} from "react-native";
-import { useNavigation } from "@react-navigation/native";
-import IconButton from "../common/IconButton";
-
-
-
+  View,
+} from 'react-native';
+import { navigate } from '../../navigation/NavigatorRef';
+import IconButton from '../common/IconButton';
 
 const SignUpForm = ({ closeModal, openLoginModal }) => {
   const navigation = useNavigation();
 
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
   const [showEmailVerification, setShowEmailVerification] = useState(false);
   const [timer, setTimer] = useState(180);
-  const [code, setCode] = useState("");
-  const [userName, setUserName] = useState("");
-
+  const [code, setCode] = useState('');
+  const [username, setUsername] = useState('');
+  const [nickname, setNickname] = useState('');
   useEffect(() => {
     let timerInterval;
     if (showEmailVerification && timer > 0) {
@@ -37,37 +36,133 @@ const SignUpForm = ({ closeModal, openLoginModal }) => {
   }, [showEmailVerification, timer]);
 
   const formatTime = (seconds) => {
-    if (typeof seconds !== "number" || isNaN(seconds)) return "0:00"; // 보호 코드
+    if (typeof seconds !== 'number' || isNaN(seconds)) return '0:00'; // 보호 코드
     const minutes = Math.floor(seconds / 60);
     const secs = seconds % 60;
     return `${minutes}:${secs < 10 ? `0${secs}` : secs}`;
   };
-  
 
-  const handleSignup = () => {
+  const handleSignup = async () => {
     if (password !== confirmPassword) {
-      Alert.alert("오류", "비밀번호가 일치하지 않습니다.");
+      Alert.alert('오류', '비밀번호가 일치하지 않습니다.');
       return;
     }
     if (!code) {
-      Alert.alert("오류", "이메일 인증을 완료해주세요.");
+      Alert.alert('오류', '이메일 인증을 완료해주세요.');
       return;
     }
-    console.log("회원가입 요청", { email, password, code, userName });
-    // TODO: 회원가입 API 요청 보내기
+    console.log('회원가입 요청', {
+      email,
+      password,
+      code,
+      username,
+      nickname,
+      user_type,
+    });
+    try {
+      const response = await axios.post(
+        'https://eventcafe.site/user/auth/register/',
+        {
+          username,
+          nickname,
+          email,
+          password,
+          user_type: regular,
+        }
+      );
+
+      console.log('✅ 회원가입 성공:', response.data);
+      Alert.alert('회원가입 성공', '로그인 페이지로 이동합니다.');
+
+      // navigationRef 사용 시
+      navigate('Main'); // 또는 navigation.navigate('Login');
+    } catch (err) {
+      console.error('❌ 회원가입 실패:', err.response?.data);
+      setError(
+        err.response?.data?.error || '회원가입 실패. 다시 시도해주세요.'
+      );
+    }
   };
 
-  const handleSendVerification = () => {
+  const handleVerifyCode = async () => {
+    try {
+      const res = await axios.post(
+        'https://eventcafe.site/user/auth/verify-email-code/',
+        {
+          email,
+          code,
+        }
+      );
+      Alert.alert('이메일 인증', '✅ 이메일 인증이 완료되었습니다!');
+    } catch (err) {
+      console.error('인증 실패:', err.response?.data);
+      Alert.alert('❌ 인증 코드가 잘못되었거나 만료되었습니다.');
+    }
+  };
+
+  const handleSendVerification = async () => {
     setShowEmailVerification(true);
-    setTimer(180);
-    console.log("인증 코드 전송 요청");
-    // TODO: 이메일 인증 API 요청 보내기
+    setTimer(300);
+
+    try {
+      const response = await axios.post(
+        'https://eventcafe.site/user/auth/send-email-verification/',
+        {
+          email,
+        }
+      );
+      console.log('인증 코드 전송 성공:', response.data);
+      Alert.alert('인증 코드가 이메일로 전송되었습니다.');
+    } catch (err) {
+      console.error('인증 코드 전송 실패:', err.response?.data);
+      Alert.alert(err.response?.data?.error || '인증 코드 전송 실패.');
+    }
+  };
+
+  const handleCheckNickname = async () => {
+    const specialCharRegex = /[^a-zA-Z0-9가-힣]/;
+
+    // ✅ 1. 특수문자 금지
+    if (specialCharRegex.test(nickname)) {
+      Alert.alert('❌ 닉네임에는 한글, 영어, 숫자만 사용할 수 있어요.');
+      setNicknameChecked(false);
+      setNicknameMessage('올바른 닉네임을 입력해주세요.');
+      return;
+    }
+
+    // ✅ 2. 길이 제한 체크
+    if (nickname.length < 2 || nickname.length > 12) {
+      Alert.alert('❌ 닉네임은 2자 이상 12자 이하로 입력해주세요.');
+      setNicknameChecked(false);
+      setNicknameMessage('닉네임 길이를 확인해주세요.');
+      return;
+    }
+
+    // ✅ 3. 서버에 중복 확인 요청
+    try {
+      const response = await axios.post(
+        'https://eventcafe.site/user/auth/check-nickname/',
+        { nickname }
+      );
+
+      if (response.data.available) {
+        setNicknameChecked(true);
+        setNicknameMessage(response.data.message);
+      } else {
+        setNicknameChecked(false);
+        setNicknameMessage(response.data.message);
+      }
+    } catch (error) {
+      console.error('닉네임 중복 확인 실패:', error.response?.data);
+      setNicknameChecked(false);
+      setNicknameMessage('중복 확인 실패. 다시 시도하세요.');
+    }
   };
 
   const handleGoToLogin = () => {
-    closeModal();         // 회원가입 모달 닫고
+    closeModal(); // 회원가입 모달 닫고
     if (typeof openLoginModal === 'function') {
-     openLoginModal();
+      openLoginModal();
     } else {
       console.warn('openLoginModal is undefined or not a function');
     }
@@ -77,7 +172,7 @@ const SignUpForm = ({ closeModal, openLoginModal }) => {
     <View style={styles.overlay}>
       <View style={styles.modalBox}>
         <View style={styles.header}>
-          <IconButton icon="angle-left" onPress={handleGoToLogin}/> 
+          <IconButton icon="angle-left" onPress={handleGoToLogin} />
           <Text style={styles.title}>회원가입</Text>
         </View>
 
@@ -88,7 +183,10 @@ const SignUpForm = ({ closeModal, openLoginModal }) => {
           onChangeText={setEmail}
           keyboardType="email-address"
         />
-        <TouchableOpacity style={styles.buttonOutline} onPress={handleSendVerification}>
+        <TouchableOpacity
+          style={styles.buttonOutline}
+          onPress={handleSendVerification}
+        >
           <Text style={styles.buttonOutlineText}>인증</Text>
         </TouchableOpacity>
         {showEmailVerification && (
@@ -99,9 +197,13 @@ const SignUpForm = ({ closeModal, openLoginModal }) => {
               value={code}
               onChangeText={setCode}
             />
-            <Text style={styles.timerText}>{timer > 0 ? `남은 시간: ${formatTime(timer)}` : "인증 시간이 만료되었습니다."}</Text>
+            <Text style={styles.timerText}>
+              {timer > 0
+                ? `남은 시간: ${formatTime(timer)}`
+                : '인증 시간이 만료되었습니다.'}
+            </Text>
           </View>
-          )}
+        )}
         <TextInput
           style={styles.input}
           placeholder="비밀번호"
@@ -118,10 +220,22 @@ const SignUpForm = ({ closeModal, openLoginModal }) => {
         />
         <TextInput
           style={styles.input}
-          placeholder="유저명"
-          value={userName}
-          onChangeText={setUserName}
+          placeholder="이름"
+          value={username}
+          onChangeText={setUsername}
         />
+        <TextInput
+          style={styles.input}
+          placeholder="닉네임"
+          value={nickname}
+          onChangeText={setNickname}
+        />
+        <TouchableOpacity
+          style={styles.buttonOutline}
+          onPress={handleCheckNickname}
+        >
+          <Text style={styles.buttonOutlineText}>중복 확인</Text>
+        </TouchableOpacity>
         <TouchableOpacity style={styles.button} onPress={handleSignup}>
           <Text style={styles.buttonText}>회원가입</Text>
         </TouchableOpacity>
@@ -133,70 +247,70 @@ const SignUpForm = ({ closeModal, openLoginModal }) => {
 const styles = StyleSheet.create({
   overlay: {
     flex: 1,
-    backgroundColor: "rgba(0,0,0,0.5)", // 반투명 배경
-    justifyContent: "center",
-    alignItems: "center", // ✅ 핵심 변경!
+    backgroundColor: 'rgba(0,0,0,0.5)', // 반투명 배경
+    justifyContent: 'center',
+    alignItems: 'center', // ✅ 핵심 변경!
     width: '125%',
   },
   modalBox: {
-    backgroundColor: "#fff",
+    backgroundColor: '#fff',
     borderRadius: 10,
     padding: 20,
-    height: 450,
-    width: "95%",
+    height: 500,
+    width: '95%',
     maxWidth: 600,
     elevation: 5, // 그림자 효과
   },
   header: {
-    flexDirection: "row",
-    alignItems: "center",
+    flexDirection: 'row',
+    alignItems: 'center',
     marginBottom: 20,
   },
   title: {
     fontSize: 20,
-    fontWeight: "bold",
+    fontWeight: 'bold',
     marginLeft: 10,
   },
   input: {
     borderWidth: 1,
-    borderColor: "#CCC",
+    borderColor: '#CCC',
     padding: 10,
     borderRadius: 5,
     marginBottom: 10,
-    backgroundColor: "#fff",
+    backgroundColor: '#fff',
   },
   button: {
-    backgroundColor: "#FF6F91",
+    backgroundColor: '#FF6F91',
     padding: 15,
     borderRadius: 5,
-    alignItems: "center",
+    alignItems: 'center',
     marginTop: 5,
   },
   buttonText: {
-    color: "#FFF",
-    fontWeight: "bold",
+    color: '#FFF',
+    fontWeight: 'bold',
   },
   buttonOutline: {
-    backgroundColor: "transparent",
+    backgroundColor: 'transparent',
     borderWidth: 1,
-    borderColor: "#FF6F91",
+    borderColor: '#FF6F91',
     padding: 10,
     borderRadius: 5,
     marginBottom: 10,
-    alignItems: "center",
+    alignItems: 'center',
   },
   buttonOutlineText: {
-    color: "#FF6F91",
-    fontWeight: "bold",
+    color: '#FF6F91',
+    fontWeight: 'bold',
   },
   timerText: {
-    color: "#555",
+    color: '#555',
     marginBottom: 10,
   },
   link: {
-    color: "#00A0E9",
+    color: '#00A0E9',
     marginTop: 10,
-    textAlign: "center",
+    textAlign: 'center',
   },
 });
 

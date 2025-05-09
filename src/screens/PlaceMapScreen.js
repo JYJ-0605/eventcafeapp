@@ -1,4 +1,5 @@
 import MapView, { Marker } from 'react-native-maps';
+import { useEffect, useState } from 'react';
 
 const PlaceMapScreen = ({ navigation }) => {
   const [places, setPlaces] = useState([]);

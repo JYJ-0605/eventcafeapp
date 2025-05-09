@@ -1,13 +1,13 @@
+import { useNavigation } from '@react-navigation/native';
 import React, { useEffect, useState } from 'react';
 import {
-  View,
-  Text,
-  StyleSheet,
-  FlatList,
-  TouchableOpacity,
   ActivityIndicator,
+  FlatList,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
 } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
 
 const DictionaryList = () => {
   const [words, setWords] = useState([]);
@@ -41,7 +41,9 @@ const DictionaryList = () => {
   const renderItem = ({ item }) => (
     <TouchableOpacity
       style={styles.card}
-      onPress={() => navigation.navigate('DictionaryDetail', { wordId: item.id })}
+      onPress={() =>
+        navigation.navigate('DictionaryDetail', { wordId: item.id })
+      }
     >
       <Text style={styles.wordTitle}>📘 {item.title}</Text>
       <Text style={styles.summary}>{item.summary}</Text>

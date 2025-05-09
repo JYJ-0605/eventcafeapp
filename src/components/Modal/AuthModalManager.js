@@ -1,8 +1,7 @@
 import React from 'react';
-import { Modal, View, StyleSheet } from 'react-native';
+import { Modal, StyleSheet, View } from 'react-native';
 import LoginForm from '../forms/LoginForm';
 import SignUpForm from '../forms/SignUpForm';
-
 
 const AuthModalManager = ({
   modalVisible,
@@ -26,7 +25,6 @@ const AuthModalManager = ({
                 setModalVisible(false);
                 setShowSignUpModal(true);
               }}
-              navigation={null}
             />
           </View>
         </View>

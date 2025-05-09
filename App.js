@@ -1,11 +1,13 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Platform } from 'react-native';
-import AppNavigator from './src/navigation/AppNavigator';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
+import { StatusBar } from 'expo-status-bar';
 import { useState } from 'react';
-import { SafeAreaView, SafeAreaProvider, useSafeAreaInsets } from 'react-native-safe-area-context';
+import { StyleSheet } from 'react-native';
+import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 import AuthModalManager from './src/components/Modal/AuthModalManager';
+import { UserProvider } from './src/context/UserContext'; // 경로 맞게 수정
+import AppNavigator from './src/navigation/AppNavigator';
+import { navigationRef } from './src/navigation/NavigatorRef'; // 요거 추가!
 
 const Stack = createStackNavigator();
 
@@ -14,20 +16,22 @@ export default function App() {
   const [showSignUpModal, setShowSignUpModal] = useState(false);
 
   return (
-    <SafeAreaProvider>
-      <NavigationContainer>
-        <SafeAreaView style={styles.container}>
-          <StatusBar style="auto" />
-          <AppNavigator onLoginPress={() => setModalVisible(true)} />
-          <AuthModalManager
-            modalVisible={modalVisible}
-            setModalVisible={setModalVisible}
-            showSignUpModal={showSignUpModal}
-            setShowSignUpModal={setShowSignUpModal}
-          />
-        </SafeAreaView>
-      </NavigationContainer>
-    </SafeAreaProvider>
+    <UserProvider>
+      <SafeAreaProvider>
+        <NavigationContainer ref={navigationRef}>
+          <SafeAreaView style={styles.container}>
+            <StatusBar style="auto" />
+            <AppNavigator onLoginPress={() => setModalVisible(true)} />
+            <AuthModalManager
+              modalVisible={modalVisible}
+              setModalVisible={setModalVisible}
+              showSignUpModal={showSignUpModal}
+              setShowSignUpModal={setShowSignUpModal}
+            />
+          </SafeAreaView>
+        </NavigationContainer>
+      </SafeAreaProvider>
+    </UserProvider>
   );
 }
 

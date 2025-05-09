@@ -1,33 +1,91 @@
 // 로그인 폼
-import React from "react";
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import axios from 'axios';
+import React, { useContext, useState } from 'react';
 import {
-  View,
+  Alert,
+  Image,
+  StyleSheet,
   Text,
   TextInput,
   TouchableOpacity,
-  Image,
-  StyleSheet,
-  Alert,
-} from "react-native";
-import { useNavigation } from "@react-navigation/native";
-import Icon from "react-native-vector-icons/MaterialCommunityIcons";
-import FontAwesome from "react-native-vector-icons/FontAwesome";
-
-
+  View,
+} from 'react-native';
+import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import { UserContext } from '../../context/UserContext'; // 경로 맞게 수정
+import { navigate } from '../../navigation/NavigatorRef'; // 경로 확인!
 
 const LoginForm = ({ closeModal, openSignUpModal }) => {
-  const nav = useNavigation();
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
 
-  const handleLogin = () => {
-    Alert.alert("로그인 요청");
+  const { setUser } = useContext(UserContext); // ✅ 훅은 컴포넌트 최상단에서
+
+  const handleLogin = async () => {
+    try {
+      const { data } = await axios.post(
+        'https://eventcafe.site/user/auth/login/',
+        {
+          email,
+          password,
+        },
+        {
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        }
+      );
+
+      console.log('👉 이메일:', email, '비밀번호:', password);
+      // ✅ 토큰 저장 (AsyncStorage는 비동기!)
+      await AsyncStorage.multiSet([
+        ['accessToken', data.access],
+        ['refreshToken', data.refresh],
+        [
+          'userInfo',
+          JSON.stringify({
+            nickname: data.nickname,
+            username: data.username,
+            email: data.email,
+            profile_image: data.profile_image,
+          }),
+        ],
+      ]);
+
+      // ✅ 전역 유저 상태 업데이트 (Context 등으로)
+      setUser({
+        nickname: data.nickname,
+        username: data.username,
+        email: data.email,
+        profile_image: data.profile_image,
+      });
+
+      // ✅ 이동 (Stack 기준 route 이름!)
+
+      setTimeout(() => {
+        alert('로그인 완료');
+        navigate('Main');
+        closeModal();
+      }, 100); // 아주 짧게 딜레이 줘서 렌더 후 이동
+
+      // 또는 'Home' 등 네비게이터에 등록한 이름
+    } catch (err) {
+      const serverMessage =
+        err.response?.data?.error ||
+        err.response?.data?.detail ||
+        '알 수 없는 오류가 발생했습니다.';
+
+      alert('로그인 실패: ' + serverMessage);
+    }
   };
 
   const handleKakaoLogin = () => {
-    Alert.alert("카카오로 로그인 요청");
+    Alert.alert('카카오로 로그인 요청');
   };
 
   const handleNaverLogin = () => {
-    Alert.alert("네이버로 로그인 요청");
+    Alert.alert('네이버로 로그인 요청');
   };
 
   return (
@@ -35,7 +93,7 @@ const LoginForm = ({ closeModal, openSignUpModal }) => {
       {/* 로고 섹션 */}
       <View style={styles.logoContainer}>
         <Image
-          source={require("../../../assets/logo.png")}
+          source={require('../../../assets/logo.png')}
           style={styles.logo}
         />
       </View>
@@ -51,6 +109,8 @@ const LoginForm = ({ closeModal, openSignUpModal }) => {
           keyboardType="email-address"
           autoCapitalize="none"
           placeholderTextColor="#888"
+          value={email}
+          onChangeText={setEmail}
         />
         <TextInput
           style={styles.input}
@@ -58,12 +118,14 @@ const LoginForm = ({ closeModal, openSignUpModal }) => {
           secureTextEntry
           autoCapitalize="none"
           placeholderTextColor="#888"
+          value={password}
+          onChangeText={setPassword}
         />
         <TouchableOpacity style={styles.loginButton} onPress={handleLogin}>
           <Text style={styles.loginButtonText}>로그인</Text>
         </TouchableOpacity>
         <Text style={styles.signupText}>
-          계정이 없으신가요?{" "}
+          계정이 없으신가요?{' '}
           <Text
             style={styles.signupLink}
             onPress={() => {
@@ -75,8 +137,9 @@ const LoginForm = ({ closeModal, openSignUpModal }) => {
         </Text>
       </View>
 
-      {/* SNS 로그인 *//* 만약 TextInput이 View 내부에 감싸져 있다면, View의 크기에 따라 입력 칸이 제한될 수도 있음. */}
-      
+      {/* SNS 로그인 */
+      /* 만약 TextInput이 View 내부에 감싸져 있다면, View의 크기에 따라 입력 칸이 제한될 수도 있음. */}
+
       <View style={styles.dividerContainer}>
         <Text style={styles.dividerText}>SNS로 로그인하기</Text>
       </View>
@@ -86,7 +149,12 @@ const LoginForm = ({ closeModal, openSignUpModal }) => {
           <Text style={styles.kakaoButtonText}>카카오로 로그인</Text>
         </TouchableOpacity>
         <TouchableOpacity style={styles.naverButton} onPress={handleNaverLogin}>
-          <FontAwesome name="envelope" size={24} style={styles.icon} color="#757575" />
+          <FontAwesome
+            name="envelope"
+            size={24}
+            style={styles.icon}
+            color="#757575"
+          />
           <Text style={styles.naverButtonText}>네이버로 로그인</Text>
         </TouchableOpacity>
         <TouchableOpacity onPress={closeModal}>
@@ -99,102 +167,102 @@ const LoginForm = ({ closeModal, openSignUpModal }) => {
 
 const styles = StyleSheet.create({
   container: {
-    height: "80%",
-    justifyContent: "center",
+    height: '80%',
+    justifyContent: 'center',
     paddingTop: 70,
-    alignItems: "center",
+    alignItems: 'center',
   },
   logoContainer: {
     marginBottom: 3,
   },
   logo: {
     height: 50,
-    resizeMode: "contain",
+    resizeMode: 'contain',
   },
   title: {
     fontSize: 26,
-    fontWeight: "bold",
-    color: "#333",
+    fontWeight: 'bold',
+    color: '#333',
     marginBottom: 10,
   },
   form: {
-    width: "100%",
+    width: '100%',
     maxWidth: 320,
     marginBottom: 50,
   },
   input: {
     height: 40,
     borderWidth: 1,
-    borderColor: "#ccc",
+    borderColor: '#ccc',
     borderRadius: 8,
     marginBottom: 10,
-    backgroundColor: "#fff",
+    backgroundColor: '#fff',
     paddingHorizontal: 10,
   },
   loginButton: {
-    backgroundColor: "#007BFF",
+    backgroundColor: '#007BFF',
     paddingVertical: 12,
     paddingHorizontal: 55,
     borderRadius: 8,
-    alignItems: "center",
+    alignItems: 'center',
     marginBottom: 2,
   },
   loginButtonText: {
-    color: "#fff",
-    fontWeight: "bold",
+    color: '#fff',
+    fontWeight: 'bold',
     fontSize: 16,
     paddingHorizontal: 26,
   },
   signupText: {
-    textAlign: "center",
-    color: "#555",
+    textAlign: 'center',
+    color: '#555',
   },
   signupLink: {
-    color: "#007BFF",
-    fontWeight: "bold",
-  },//marginVertical이 클수록 소셜로그인 위로 올라옴
+    color: '#007BFF',
+    fontWeight: 'bold',
+  }, //marginVertical이 클수록 소셜로그인 위로 올라옴
   dividerContainer: {
     marginVertical: 1,
-    alignItems: "center",
+    alignItems: 'center',
   },
   dividerText: {
     fontSize: 14,
-    color: "#888",
+    color: '#888',
   },
   socialButtons: {
-    width: "90%",
+    width: '90%',
     maxWidth: 320,
   },
   kakaoButton: {
-    flexDirection: "row",
-    alignItems: "center",
-    backgroundColor: "#FEE500",
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#FEE500',
     paddingVertical: 13,
     paddingHorizontal: 46,
     borderRadius: 8,
     marginBottom: 8,
-    justifyContent: "center",
+    justifyContent: 'center',
   },
   kakaoButtonText: {
-    color: "#3C1E1E",
-    fontWeight: "bold",
+    color: '#3C1E1E',
+    fontWeight: 'bold',
     fontSize: 13,
     marginLeft: 8,
   },
   naverButton: {
-    flexDirection: "row",
-    alignItems: "center",
-    backgroundColor: "#fff",
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#fff',
     borderWidth: 1,
-    borderColor: "#E0E0E0",
+    borderColor: '#E0E0E0',
     paddingVertical: 13,
     paddingHorizontal: 46,
     borderRadius: 8,
-    justifyContent: "center",
+    justifyContent: 'center',
   },
   naverButtonText: {
-    color: "#757575",
-    fontWeight: "bold",
+    color: '#757575',
+    fontWeight: 'bold',
     fontSize: 13,
     marginLeft: 8,
   },
@@ -204,7 +272,7 @@ const styles = StyleSheet.create({
     color: '#007BFF',
     textAlign: 'center',
     fontWeight: '600',
-  },  
+  },
   icon: {
     marginRight: 8,
   },
