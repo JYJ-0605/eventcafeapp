@@ -1,6 +1,8 @@
   // AppNavigator.js
-  import { createStackNavigator } from '@react-navigation/stack';
+  import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import React from 'react';
+import { Platform, StatusBar } from 'react-native';
+
 import BoardScreen from '../screens/Board/BoardScreen';
 import PostScreen from '../screens/Board/PostScreen';
 import CafeRegisterScreen from '../screens/CafeRegister/CafeRegisterScreen'; // 장소 등록 화면
@@ -25,11 +27,20 @@ import SignUpScreen from '../screens/SignUpScreen'; // 회원가입 화면
 import ArtistDetailScreen from '../screens/Subscribe/ArtistDetailScreen';
 import SubscribeArtistScreen from '../screens/Subscribe/SubscribeArtistScreen';
 
-  const Stack = createStackNavigator();
+  const Stack = createNativeStackNavigator();
 
   const AppNavigator = ({ onLoginPress }) => {
     return (
-      <Stack.Navigator initialRouteName="Main">
+      <Stack.Navigator initialRouteName="Main" 
+      screenOptions={{
+        headerBackTitleVisible: false,
+        headerTitleAlign: 'center', // 텍스트 가운데 정렬
+        headerTitleStyle: {
+          fontSize: 20,
+          fontWeight: 'bold',
+        },
+        headerShadowVisible: false,
+      }}>
         <Stack.Screen
           name="Main"
           options={{ headerShown: false }}

@@ -1,24 +1,24 @@
 import React, { useState } from 'react';
 import {
-  View,
-  TextInput,
   Button,
+  Image,
+  ScrollView,
   StyleSheet,
   Text,
-  ScrollView,
+  TextInput,
   TouchableOpacity,
-  Image,
+  View,
 } from 'react-native';
 
 // 더미 아티스트 데이터
 const artistData = [
   { name: 'ALL' },
-  { name: '윤서연', image: require("../../../assets/artist/tripleS_1.jpg") },
-  { name: '김유연', image: require("../../../assets/artist/tripleS_5.jpg") },
-  { name: '김나경', image: require("../../../assets/artist/tripleS_7.jpg") },
-  { name: '코토네', image: require("../../../assets/artist/tripleS_11.jpg") },
-  { name: '니엔', image: require("../../../assets/artist/tripleS_13.jpg") },
-  { name: '정하연', image: require("../../../assets/artist/tripleS_19.jpg") },
+  { name: '윤서연', image: require('../../../assets/artist/tripleS_1.jpg') },
+  { name: '김유연', image: require('../../../assets/artist/tripleS_5.jpg') },
+  { name: '김나경', image: require('../../../assets/artist/tripleS_7.jpg') },
+  { name: '코토네', image: require('../../../assets/artist/tripleS_11.jpg') },
+  { name: '니엔', image: require('../../../assets/artist/tripleS_13.jpg') },
+  { name: '정하연', image: require('../../../assets/artist/tripleS_19.jpg') },
 ];
 
 const PostScreen = ({ navigation }) => {
@@ -35,7 +35,11 @@ const PostScreen = ({ navigation }) => {
   };
 
   const handleSubmit = () => {
-    console.log('작성한 글:', { artist: selectedArtist || 'ALL', title, content });
+    console.log('작성한 글:', {
+      artist: selectedArtist || 'ALL',
+      title,
+      content,
+    });
     navigation.goBack();
   };
 
@@ -48,7 +52,9 @@ const PostScreen = ({ navigation }) => {
         style={styles.artistRow}
       >
         {artistData.map((artist, idx) => {
-          const isSelected = selectedArtist === artist.name || (!selectedArtist && artist.name === 'ALL');
+          const isSelected =
+            selectedArtist === artist.name ||
+            (!selectedArtist && artist.name === 'ALL');
           return (
             <View key={idx} style={styles.artistItem}>
               {/* 이미지 및 텍스트 전체를 눌러서 선택 */}
@@ -58,14 +64,20 @@ const PostScreen = ({ navigation }) => {
                 style={styles.imageWrapper}
               >
                 {/* 아티스트 이미지 */}
-                {artist.image
-                  ? <Image source={artist.image} style={styles.artistImage} />
-                  : (
-                    <View style={[styles.artistImage, { justifyContent: 'center', alignItems: 'center' }]}>
-                      <Text style={{ fontWeight: 'bold', color: '#666' }}>ALL</Text>
-                    </View>
-                  )
-                }
+                {artist.image ? (
+                  <Image source={artist.image} style={styles.artistImage} />
+                ) : (
+                  <View
+                    style={[
+                      styles.artistImage,
+                      { justifyContent: 'center', alignItems: 'center' },
+                    ]}
+                  >
+                    <Text style={{ fontWeight: 'bold', color: '#666' }}>
+                      ALL
+                    </Text>
+                  </View>
+                )}
                 {/* 체크 표시 */}
                 {isSelected && (
                   <View style={styles.checkOverlay}>
@@ -90,8 +102,7 @@ const PostScreen = ({ navigation }) => {
           onChangeText={setTitle}
         />
         <TextInput
-          placeholder={
-        `[이벤트 공동 주최자 모집 내용 예시]
+          placeholder={`[이벤트 공동 주최자 모집 내용 예시]
 
         이벤트 대상 : 
 
@@ -108,14 +119,13 @@ const PostScreen = ({ navigation }) => {
         이벤트 진행 관련 주의사항 :
 
         공동주최에 지원할 수 있는 방법을 남겨주세요. 
-        (이메일, 카카오 오픈채팅방, 구글폼 등) :`
-        }
+        (이메일, 카카오 오픈채팅방, 구글폼 등) :`}
           style={[
             styles.input,
             {
               height: 400,
-              textAlignVertical: 'top',  // multiline 텍스트가 위쪽에서 시작하도록
-            }
+              textAlignVertical: 'top', // multiline 텍스트가 위쪽에서 시작하도록
+            },
           ]}
           value={content}
           onChangeText={setContent}
@@ -174,7 +184,7 @@ const styles = StyleSheet.create({
   formContainer: {
     padding: 20,
     marginTop: 30, // 간격 명시적으로 부여
-  },  
+  },
   input: {
     width: '100%',
     borderWidth: 1,

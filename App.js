@@ -1,5 +1,4 @@
 import { NavigationContainer } from '@react-navigation/native';
-import { createStackNavigator } from '@react-navigation/stack';
 import { useState } from 'react';
 import { StyleSheet } from 'react-native';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
@@ -7,8 +6,6 @@ import AuthModalManager from './src/components/Modal/AuthModalManager';
 import { UserProvider } from './src/context/UserContext'; // 경로 맞게 수정
 import AppNavigator from './src/navigation/AppNavigator';
 import { navigationRef } from './src/navigation/NavigatorRef'; // 요거 추가!
-
-const Stack = createStackNavigator();
 
 export default function App() {
   const [modalVisible, setModalVisible] = useState(false);
@@ -18,7 +15,10 @@ export default function App() {
     <UserProvider>
       <SafeAreaProvider>
         <NavigationContainer ref={navigationRef}>
-          <SafeAreaView style={styles.container}>
+          <SafeAreaView
+            style={styles.container}
+            edges={['left', 'right', 'bottom']}
+          >
             <AppNavigator onLoginPress={() => setModalVisible(true)} />
             <AuthModalManager
               modalVisible={modalVisible}

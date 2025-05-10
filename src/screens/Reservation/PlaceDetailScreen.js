@@ -7,7 +7,6 @@ const PlaceDetailScreen = ({ route }) => {
 
   const {
     name,
-    region,
     address,
     type,
     mainImage,

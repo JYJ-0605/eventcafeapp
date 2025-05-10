@@ -13,6 +13,7 @@ import Swiper from 'react-native-swiper';
 import Card from '../components/Card/Card';
 import Header from '../components/common/Header';
 import SearchBar from '../components/common/SearchBar';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 const { width } = Dimensions.get('window');
 
@@ -56,6 +57,7 @@ const MainScreen = ({ onLoginPress, navigation }) => {
 
   return (
     <ScrollView style={styles.container}>
+      <SafeAreaView />
       {/* 헤더 */}
       <Header
         onLoginPress={onLoginPress}

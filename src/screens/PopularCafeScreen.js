@@ -1,6 +1,7 @@
 import { FontAwesome, MaterialIcons } from '@expo/vector-icons';
 import React, { useEffect, useState } from 'react';
 import { Image, ScrollView, Text, TouchableOpacity, View } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 const PopularCafeScreen = () => {
   const [idols, setIdols] = useState([]);
@@ -25,6 +26,7 @@ const PopularCafeScreen = () => {
     <View
       style={{ flex: 1, backgroundColor: '#E3F7F7', paddingHorizontal: 16 }}
     >
+    
       {/* 헤더 */}
       <View
         style={{ flexDirection: 'row', alignItems: 'center', marginTop: 16 }}
@@ -63,6 +65,8 @@ const PopularCafeScreen = () => {
         <CategorySection title="인기 게임 콜라보 TOP 3" items={games} />
       </ScrollView>
     </View> // ✅ 여기서 닫힘
+    
+  
   );
 };
 
