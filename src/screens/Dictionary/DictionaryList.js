@@ -27,9 +27,9 @@ const DictionaryList = () => {
         },
         {
           id: '2',
-          title: '출구는 없다',
+          title: '취켓팅',
           summary: '돌아갈 수 없다. 더 깊이 빠진다.',
-          author: '@animestan',
+          author: '@3114jin@naver.com',
         },
       ];
       setWords(dummyData);

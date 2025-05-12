@@ -1,13 +1,13 @@
-  // AppNavigator.js
-  import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import React from 'react';
-import { Platform, StatusBar } from 'react-native';
+// AppNavigator.js
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 import BoardScreen from '../screens/Board/BoardScreen';
 import PostScreen from '../screens/Board/PostScreen';
 import CafeRegisterScreen from '../screens/CafeRegister/CafeRegisterScreen'; // 장소 등록 화면
 import CalendarScreen from '../screens/Calendar/CalendarScreen';
 import DictionaryList from '../screens/Dictionary/DictionaryList'; // 덕질 사전 화면
+import DictionaryForm from '../screens/Dictionary/DictionaryForm'; // 덕질 사전 등록 화면
+import DictionaryDetail from '../screens/Dictionary/DictionaryDetail'; // 덕질 사전 상세 화면
 import EventInfoSubmitScreen from '../screens/EventRegister/EventInfoSubmitScreen';
 import EventRegisterScreen from '../screens/EventRegister/EventRegisterScreen';
 import InputBirthEventInfo from '../screens/EventRegister/InputBirthEventInfo';
@@ -58,9 +58,11 @@ import SubscribeArtistScreen from '../screens/Subscribe/SubscribeArtistScreen';
         
         {/* 덕질 사전 */}
         <Stack.Screen name="DictionaryList" component={DictionaryList} options={{ title: '덕질 사전', headerBackTitleVisible: false, headerBackTitle: "" }} />
-        
+        <Stack.Screen name="DictionaryForm" component={DictionaryForm} options={{ title: '덕질 사전 등록', headerBackTitleVisible: false, headerBackTitle: "" }} />
+        <Stack.Screen name="DictionaryDetail" component={DictionaryDetail} options={{ title: '덕질 사전 상세', headerBackTitleVisible: false, headerBackTitle: "" }} />
+
         {/* 인기 카페 이벤트 */}
-        <Stack.Screen name="PopularCafe" component={PopularCafeScreen} options={{ title: '인기 카페 이벤트', headerBackTitleVisible: false, headerBackTitle: "" , headerShown: false}} />
+        <Stack.Screen name="PopularCafe" component={PopularCafeScreen} options={{ title: '인기 카페 이벤트', headerBackTitleVisible: false, headerBackTitle: ""}} />
         
         {/* 캘린더 */}
         <Stack.Screen name="Calendar" component={CalendarScreen} options={{ title: '캘린더', headerBackTitleVisible: false, headerBackTitle: "" }} />

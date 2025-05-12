@@ -145,15 +145,16 @@ const MainScreen = ({ onLoginPress, navigation }) => {
         <Card title="인기 카페 이벤트">
           <ScrollView horizontal showsHorizontalScrollIndicator={false}>
             {images.map((img, index) => (
-              <TouchableOpacity
-                key={`banner-${index}`}
-                style={styles.horizontalCard}
-                onPress={() => console.log(`배너 ${index + 1} 클릭됨`)}
-              >
-                <View style={styles.imageBox}>
-                  <Image source={img} style={styles.bannerImage} />
-                </View>
-              </TouchableOpacity>
+              <View key={`banner-container-${index}`} style={styles.popularCafeCard}>
+                <TouchableOpacity
+                  key={`banner-${index}`}
+                  onPress={() => console.log(`배너 ${index + 1} 클릭됨`)}
+                >
+                  <View style={styles.popularCafeImageContainer}>
+                    <Image source={img} style={styles.popularCafeImage} resizeMode="contain" />
+                  </View>
+                </TouchableOpacity>
+              </View>
             ))}
           </ScrollView>
         </Card>
@@ -164,7 +165,7 @@ const MainScreen = ({ onLoginPress, navigation }) => {
             {dummyPlaces.map((place) => (
               <TouchableOpacity
                 key={`available-${place.id}`}
-                style={styles.horizontalCard}
+                style={styles.reservablePlaceCard}
                 onPress={() =>
                   navigation.navigate('PlaceDetail', {
                     ...place,
@@ -172,16 +173,9 @@ const MainScreen = ({ onLoginPress, navigation }) => {
                   })
                 }
               >
-                <View style={styles.imageBox}>
-                  <Image source={place.mainImage} style={styles.placeImage} />
-                </View>
-                <View style={styles.infoBox}>
-                  <Text style={styles.title}>{place.name}</Text>
-                  <Text>{place.address}</Text>
-                  <Text>{place.hours}</Text>
-                  <Text>{place.fee}</Text>
-                  <Text>{place.deposit}</Text>
-                </View>
+                <Image source={place.mainImage} style={styles.reservablePlaceImage} />
+                <Text style={styles.reservablePlaceName}>{place.name}</Text>
+                <Text style={styles.reservablePlaceRegion}>{place.region}</Text>
               </TouchableOpacity>
             ))}
           </ScrollView>
@@ -235,29 +229,47 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
     paddingBottom: 40,
   },
-  horizontalCard: {
-    width: 240,
-    borderRadius: 12,
-    marginRight: 12,
+  popularCafeCard: { // 인기 카페 이벤트 카드 스타일
+    width: 200,
+    height: 250,
+    borderRadius: 10,
+    marginRight: 8,
   },
-  imageBox: {
+  popularCafeImageContainer: {
     width: '100%',
-    height: 180,
+    height: 250,
     justifyContent: 'center',
     alignItems: 'center',
     overflow: 'hidden',
+    borderRadius: 10,
   },
-  bannerImage: {
+  popularCafeImage: {
     width: '100%',
     height: '100%',
-    resizeMode: 'contain',
-    borderRadius: 12,
+    resizeMode: 'contain', // 추가됨: 이미지 비율 유지
+    borderRadius: 10,
   },
-  placeImage: {
+  reservablePlaceCard: { // 대관 가능한 장소 카드 스타일
+    width: 250,
+    borderRadius: 10,
+    marginRight: 8,
+  },
+  reservablePlaceImage: {
     width: '100%',
-    height: '100%',
+    height: 200,
     resizeMode: 'cover',
-    borderRadius: 12,
+    borderRadius: 10,
+  },
+  reservablePlaceName: {
+    marginTop: 8,
+    fontWeight: 'bold',
+    fontSize: 14,
+    textAlign: 'left',
+  },
+  reservablePlaceRegion: {
+    fontSize: 12,
+    color: 'gray',
+    textAlign: 'left',
   },
   infoBox: {
     paddingTop: 8,

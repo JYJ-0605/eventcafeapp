@@ -26,47 +26,15 @@ const PopularCafeScreen = () => {
     <View
       style={{ flex: 1, backgroundColor: '#E3F7F7', paddingHorizontal: 16 }}
     >
-    
-      {/* 헤더 */}
-      <View
-        style={{ flexDirection: 'row', alignItems: 'center', marginTop: 16 }}
-      >
-        <TouchableOpacity>
-          <MaterialIcons name="arrow-back" size={24} color="black" />
-        </TouchableOpacity>
-        <Text
-          style={{
-            flex: 1,
-            textAlign: 'center',
-            fontSize: 18,
-            fontWeight: 'bold',
-          }}
-        >
-          현재 인기 카페 이벤트
-        </Text>
-        <View style={{ flexDirection: 'row', gap: 10 }}>
-          <FontAwesome name="bell" size={22} color="black" />
-          <MaterialIcons name="menu" size={26} color="black" />
-        </View>
-      </View>
-
-      {/* 로고 */}
-      <View style={{ alignItems: 'center', marginVertical: 10 }}>
-        <Image
-          source={require('../../assets/logo.png')}
-          style={{ width: 120, height: 40 }}
-        />
-      </View>
-
-      <ScrollView showsVerticalScrollIndicator={false}>
-        {/* 데이터 섹션들 */}
-        <CategorySection title="인기 스타 TOP 3" items={idols} />
-        <CategorySection title="인기 유튜버 TOP 3" items={youtubers} />
-        <CategorySection title="인기 게임 콜라보 TOP 3" items={games} />
-      </ScrollView>
-    </View> // ✅ 여기서 닫힘
-    
-  
+      <SafeAreaView>
+        <ScrollView showsVerticalScrollIndicator={false}>
+          {/* 데이터 섹션들 */}
+          <CategorySection title="인기 스타 TOP 3" items={idols} />
+          <CategorySection title="인기 유튜버 TOP 3" items={youtubers} />
+          <CategorySection title="인기 게임 콜라보 TOP 3" items={games} />
+        </ScrollView>
+      </SafeAreaView>
+    </View>
   );
 };
 
@@ -82,7 +50,7 @@ const CategorySection = ({ title, items = [] }) => {
       </Text>
       <View style={{ flexDirection: 'row', gap: 10 }}>
         {items.slice(0, 3).map((item, index) => (
-          <View
+          <TouchableOpacity
             key={index}
             style={{
               flex: 1,
@@ -94,9 +62,20 @@ const CategorySection = ({ title, items = [] }) => {
               elevation: 3,
               padding: 10,
             }}
+            onPress={() => {
+              // TODO: 상세 페이지로 이동하는 로직 추가
+              console.log(`${title} - ${item.name} 클릭`);
+            }}
           >
-            <Text style={{ fontWeight: 'bold' }}>{item.name}</Text>
-          </View>
+            {item.image && (
+              <Image
+                source={{ uri: item.image }}
+                style={{ width: 80, height: 60, marginBottom: 5, borderRadius: 5 }}
+                resizeMode="contain"
+              />
+            )}
+            <Text style={{ fontWeight: 'bold', fontSize: 12, textAlign: 'center' }}>{item.name}</Text>
+          </TouchableOpacity>
         ))}
       </View>
     </View>

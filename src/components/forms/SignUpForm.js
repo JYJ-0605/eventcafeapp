@@ -270,7 +270,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     borderRadius: 10,
     padding: 20,
-    height: 500,
+    height: 600,
     width: '95%',
     maxWidth: 600,
     elevation: 5, // 그림자 효과

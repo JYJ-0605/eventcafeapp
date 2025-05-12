@@ -11,7 +11,7 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import FontAwesome from 'react-native-vector-icons/FontAwesome';
+
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { UserContext } from '../../context/UserContext'; // 경로 맞게 수정
 import { navigate } from '../../navigation/NavigatorRef'; // 경로 확인!
@@ -84,10 +84,6 @@ const LoginForm = ({ closeModal, openSignUpModal }) => {
     Alert.alert('카카오로 로그인 요청');
   };
 
-  const handleNaverLogin = () => {
-    Alert.alert('네이버로 로그인 요청');
-  };
-
   return (
     <View style={styles.container}>
       {/* 로고 섹션 */}
@@ -147,15 +143,6 @@ const LoginForm = ({ closeModal, openSignUpModal }) => {
         <TouchableOpacity style={styles.kakaoButton} onPress={handleKakaoLogin}>
           <Icon name="chat" size={24} style={styles.icon} color="#3C1E1E" />
           <Text style={styles.kakaoButtonText}>카카오로 로그인</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.naverButton} onPress={handleNaverLogin}>
-          <FontAwesome
-            name="envelope"
-            size={24}
-            style={styles.icon}
-            color="#757575"
-          />
-          <Text style={styles.naverButtonText}>네이버로 로그인</Text>
         </TouchableOpacity>
         <TouchableOpacity onPress={closeModal}>
           <Text style={styles.closeText}>닫기</Text>
