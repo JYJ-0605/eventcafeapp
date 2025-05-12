@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import {
   Button,
   Image,
@@ -9,6 +9,7 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
+import { UserContext } from '../../context/UserContext';
 
 // 더미 아티스트 데이터
 const artistData = [
@@ -42,6 +43,8 @@ const PostScreen = ({ navigation }) => {
     });
     navigation.goBack();
   };
+
+  const { user, setUser } = useContext(UserContext); // 로그인 정보 Context에서 받아오기
 
   return (
     <View style={styles.container}>
@@ -92,9 +95,29 @@ const PostScreen = ({ navigation }) => {
           );
         })}
       </ScrollView>
+      <View style={styles.userRow}>
+  {user?.profileImage ? (
+    <Image
+      source={{ uri: user.profileImage }}
+      style={styles.profileImage}
+    />
+  ) : (
+    <View style={styles.avatarCircle}>
+      <Text style={styles.avatarText}>
+        {user?.nickname?.charAt(0).toUpperCase() || '유'}
+      </Text>
+    </View>
+  )}
 
+  <Text style={styles.usernameText}>
+    {user?.nickname || '닉네임 없음'}
+  </Text>
+</View>
+
+      
       {/* 글 작성 폼 */}
       <View style={styles.formContainer}>
+     
         <TextInput
           placeholder="제목"
           style={styles.input}
@@ -134,6 +157,7 @@ const PostScreen = ({ navigation }) => {
         <Button title="등록" onPress={handleSubmit} />
       </View>
     </View>
+    
   );
 };
 
@@ -182,8 +206,7 @@ const styles = StyleSheet.create({
     color: '#333',
   },
   formContainer: {
-    padding: 20,
-    marginTop: 30, // 간격 명시적으로 부여
+    padding: 20, // 간격 명시적으로 부여
   },
   input: {
     width: '100%',
@@ -192,6 +215,44 @@ const styles = StyleSheet.create({
     marginBottom: 15,
     padding: 10,
     borderRadius: 8,
+  },
+  avatarContainer: {
+    alignItems: 'flex', // ← 여기에 적당한 간격 추가
+    marginLeft: 16,
+  },
+  
+  
+  avatarCircle: {
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+    backgroundColor: '#007bff',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  
+  avatarText: {
+    color: '#fff',
+    fontWeight: 'bold',
+    fontSize: 16,
+  },
+  
+  profileImage: {
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+  },
+  userRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingHorizontal: 20, // 간격 명시적으로 부여
+  },
+  
+  usernameText: {
+    marginLeft: 10,
+    fontSize: 16,
+    fontWeight: '600',
+    color: '#333',
   },
 });
 

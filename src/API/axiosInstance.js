@@ -1,7 +1,7 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 import { Alert } from 'react-native';
-import NavigatorRef from '../navigation/NavigatorRef'; // ❗ 네비게이션 리다이렉트용 (아래 참고)
+import {navigate} from '../navigation/NavigatorRef'; // ❗ 네비게이션 리다이렉트용 (아래 참고)
 
 // ① 인스턴스 만들기
 const axiosInstance = axios.create({
@@ -48,7 +48,9 @@ axiosInstance.interceptors.response.use(
         console.error('⚠️ 토큰 갱신 실패:', refreshError);
         await AsyncStorage.clear();
         Alert.alert('세션 만료', '다시 로그인해주세요.');
-        navigate('Login'); // 👉 Navigation으로 이동
+        if (navigationRef.isReady()) {
+          navigationRef.current?.navigate('Login');
+        }
         return Promise.reject(refreshError);
       }
     }

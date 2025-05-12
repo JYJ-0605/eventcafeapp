@@ -1,5 +1,6 @@
 import { FontAwesome } from '@expo/vector-icons';
-import React from 'react';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import React, { useContext, useState } from 'react';
 import {
   Dimensions,
   Image,
@@ -9,11 +10,14 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import Swiper from 'react-native-swiper';
 import Card from '../components/Card/Card';
 import Header from '../components/common/Header';
 import SearchBar from '../components/common/SearchBar';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import SlideMenu from '../components/common/SlideMenu';
+import { UserContext } from '../context/UserContext';
+import { navigate } from '../navigation/NavigatorRef';
 
 const { width } = Dimensions.get('window');
 
@@ -49,11 +53,24 @@ const dummyPlaces = [
 ];
 
 const MainScreen = ({ onLoginPress, navigation }) => {
+  const { user, setUser } = useContext(UserContext); // 로그인 정보 Context에서 받아오기
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const toggleMenu = () => setIsMenuOpen((prev) => !prev);
   const images = [
     require('../../assets/banner/banner_sample1.jpg'),
     require('../../assets/banner/banner_sample2.jpg'),
     require('../../assets/banner/banner_sample3.jpg'),
   ];
+
+  const handleLogout = async () => {
+    try {
+      await AsyncStorage.clear(); // or remove specific keys
+      setUser(null); // Context도 초기화
+      navigate('Login'); // 로그인 화면으로 이동
+    } catch (err) {
+      console.error('❌ 로그아웃 실패:', err);
+    }
+  };
 
   return (
     <ScrollView style={styles.container}>
@@ -61,8 +78,27 @@ const MainScreen = ({ onLoginPress, navigation }) => {
       {/* 헤더 */}
       <Header
         onLoginPress={onLoginPress}
+        onLogoutPress={() => {
+          setUser(null);
+          AsyncStorage.removeItem('accessToken'); // 필요시 토큰 삭제
+        }}
         onIconPress={() => navigation.navigate('SubscribeArtist')}
         onBookPress={() => navigation.navigate('DictionaryList')}
+        isLoggedIn={!!user}
+        user={user}
+        onToggleMenu={toggleMenu}
+      />
+      <SlideMenu
+        visible={isMenuOpen}
+        onClose={() => setIsMenuOpen(false)}
+        onLogoutPress={() => {
+          setUser(null);
+          AsyncStorage.removeItem('accessToken'); // 필요시 토큰 삭제
+        }}
+        onProfilePress={() => {
+          navigate('Profile');
+          setIsMenuOpen(false);
+        }}
       />
       <SearchBar />
 
@@ -145,13 +181,20 @@ const MainScreen = ({ onLoginPress, navigation }) => {
         <Card title="인기 카페 이벤트">
           <ScrollView horizontal showsHorizontalScrollIndicator={false}>
             {images.map((img, index) => (
-              <View key={`banner-container-${index}`} style={styles.popularCafeCard}>
+              <View
+                key={`banner-container-${index}`}
+                style={styles.popularCafeCard}
+              >
                 <TouchableOpacity
                   key={`banner-${index}`}
                   onPress={() => console.log(`배너 ${index + 1} 클릭됨`)}
                 >
                   <View style={styles.popularCafeImageContainer}>
-                    <Image source={img} style={styles.popularCafeImage} resizeMode="contain" />
+                    <Image
+                      source={img}
+                      style={styles.popularCafeImage}
+                      resizeMode="contain"
+                    />
                   </View>
                 </TouchableOpacity>
               </View>
@@ -173,7 +216,10 @@ const MainScreen = ({ onLoginPress, navigation }) => {
                   })
                 }
               >
-                <Image source={place.mainImage} style={styles.reservablePlaceImage} />
+                <Image
+                  source={place.mainImage}
+                  style={styles.reservablePlaceImage}
+                />
                 <Text style={styles.reservablePlaceName}>{place.name}</Text>
                 <Text style={styles.reservablePlaceRegion}>{place.region}</Text>
               </TouchableOpacity>
@@ -229,7 +275,8 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
     paddingBottom: 40,
   },
-  popularCafeCard: { // 인기 카페 이벤트 카드 스타일
+  popularCafeCard: {
+    // 인기 카페 이벤트 카드 스타일
     width: 200,
     height: 250,
     borderRadius: 10,
@@ -249,7 +296,8 @@ const styles = StyleSheet.create({
     resizeMode: 'contain', // 추가됨: 이미지 비율 유지
     borderRadius: 10,
   },
-  reservablePlaceCard: { // 대관 가능한 장소 카드 스타일
+  reservablePlaceCard: {
+    // 대관 가능한 장소 카드 스타일
     width: 250,
     borderRadius: 10,
     marginRight: 8,

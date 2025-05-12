@@ -26,6 +26,7 @@ import ReservablePlacesListScreen from '../screens/Reservation/ReservablePlacesL
 import SignUpScreen from '../screens/SignUpScreen'; // 회원가입 화면
 import ArtistDetailScreen from '../screens/Subscribe/ArtistDetailScreen';
 import SubscribeArtistScreen from '../screens/Subscribe/SubscribeArtistScreen';
+import ProfilePage from '../screens/Profile/ProfilePage';
 
   const Stack = createNativeStackNavigator();
 
@@ -89,6 +90,7 @@ import SubscribeArtistScreen from '../screens/Subscribe/SubscribeArtistScreen';
         <Stack.Screen name="InputBirthEventInfo" component={InputBirthEventInfo} options={{ title: '생일카페 이벤트 세부 정보 입력', headerBackTitleVisible: false, headerBackTitle: "" }} />
         <Stack.Screen name="InputCollabEventInfo" component={InputCollabEventInfo} options={{ title: '콜라보카페 이벤트 세부 정보 입력', headerBackTitleVisible: false, headerBackTitle: "" }} />
         <Stack.Screen name="EventInfoSubmit" component={EventInfoSubmitScreen} options={{ title: '이벤트 등록 완료', headerBackTitleVisible: false, headerBackTitle: "" }} />
+        <Stack.Screen name="Profile" component={ProfilePage} options={{ title: '프로필 페이지', headerBackTitleVisible: false, headerBackTitle: "" }} />
       </Stack.Navigator>
     );
   };

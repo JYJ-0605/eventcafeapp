@@ -1,8 +1,15 @@
-import React, { useContext, useEffect, useState } from 'react';
-import { View, Text, StyleSheet, Image, ScrollView, TouchableOpacity } from 'react-native';
 import { Avatar, CircularProgress } from '@rneui/themed'; // react-native-elements 사용
+import React, { useContext, useEffect, useState } from 'react';
+import {
+  Image,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native';
+import axiosInstance from '../../API/axiosInstance'; // Axios 설정 (본인 앱 구조에 맞게 수정)
 import { UserContext } from '../../context/UserContext'; // Context API (본인 앱 구조에 맞게 수정)
-import axiosInstance from '../../shared/api/axiosInstance'; // Axios 설정 (본인 앱 구조에 맞게 수정)
 
 const ProfilePage = ({ route, navigation }) => {
   const { nickname } = route.params; // useParams 대신 route.params 사용
@@ -37,14 +44,26 @@ const ProfilePage = ({ route, navigation }) => {
   if (!profile) {
     return (
       <ScrollView contentContainerStyle={styles.errorContainer}>
-        <Image
-          source={require('../../assets/images/default_profile.png')}
-          style={styles.errorImage}
-          resizeMode="contain"
-        />
+        {user?.profileImage ? (
+          <Image
+            source={{ uri: user.profileImage }}
+            style={styles.profileImage}
+          />
+        ) : (
+          <View style={styles.avatarCircle}>
+            <Text style={styles.avatarText}>
+              {user?.nickname?.charAt(0).toUpperCase() || '유'}
+            </Text>
+          </View>
+        )}
         <Text style={styles.errorTitle}>😢 사용자 정보를 찾을 수 없어요!</Text>
-        <Text style={styles.errorMessage}>입력한 닉네임이 잘못되었거나, 서버에서 정보를 불러오지 못했어요.</Text>
-        <TouchableOpacity style={styles.errorButton} onPress={() => navigation.goBack()}>
+        <Text style={styles.errorMessage}>
+          입력한 닉네임이 잘못되었거나, 서버에서 정보를 불러오지 못했어요.
+        </Text>
+        <TouchableOpacity
+          style={styles.errorButton}
+          onPress={() => navigation.goBack()}
+        >
           <Text style={styles.errorButtonText}>🔙 돌아가기</Text>
         </TouchableOpacity>
       </ScrollView>
@@ -58,7 +77,11 @@ const ProfilePage = ({ route, navigation }) => {
       <View style={styles.paper}>
         <Avatar
           source={{ uri: profile.profile_image }}
-          title={profile.nickname ? profile.nickname.substring(0, 2).toUpperCase() : 'U'}
+          title={
+            profile.nickname
+              ? profile.nickname.substring(0, 2).toUpperCase()
+              : 'U'
+          }
           size={110}
           rounded
           containerStyle={styles.avatar}
@@ -96,9 +119,13 @@ const ProfilePage = ({ route, navigation }) => {
             </Text>
             <TouchableOpacity
               style={styles.viewPostsButton}
-              onPress={() => navigation.navigate('UserPosts', { nickname: profile.nickname })} // UserPosts 스크린으로 이동
+              onPress={() =>
+                navigation.navigate('UserPosts', { nickname: profile.nickname })
+              } // UserPosts 스크린으로 이동
             >
-              <Text style={styles.viewPostsButtonText}>📃 이 사용자 글 보기</Text>
+              <Text style={styles.viewPostsButtonText}>
+                📃 이 사용자 글 보기
+              </Text>
             </TouchableOpacity>
           </View>
         )}

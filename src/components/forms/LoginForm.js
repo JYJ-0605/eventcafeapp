@@ -1,5 +1,4 @@
 // 로그인 폼
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 import React, { useContext, useState } from 'react';
 import {
@@ -12,6 +11,7 @@ import {
   View,
 } from 'react-native';
 
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { UserContext } from '../../context/UserContext'; // 경로 맞게 수정
 import { navigate } from '../../navigation/NavigatorRef'; // 경로 확인!
@@ -20,7 +20,7 @@ const LoginForm = ({ closeModal, openSignUpModal }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
-  const { setUser } = useContext(UserContext); // ✅ 훅은 컴포넌트 최상단에서
+  const { user, setUser } = useContext(UserContext); // ✅ 훅은 컴포넌트 최상단에서
 
   const handleLogin = async () => {
     try {
@@ -37,7 +37,6 @@ const LoginForm = ({ closeModal, openSignUpModal }) => {
         }
       );
 
-      
       // ✅ 토큰 저장 (AsyncStorage는 비동기!)
       await AsyncStorage.multiSet([
         ['accessToken', data.access],
