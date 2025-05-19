@@ -2,7 +2,6 @@
 import axios from 'axios';
 import React, { useContext, useState } from 'react';
 import {
-  Alert,
   Image,
   StyleSheet,
   Text,
@@ -12,6 +11,7 @@ import {
 } from 'react-native';
 
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import * as WebBrowser from 'expo-web-browser';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { UserContext } from '../../context/UserContext'; // 경로 맞게 수정
 import { navigate } from '../../navigation/NavigatorRef'; // 경로 확인!
@@ -79,8 +79,40 @@ const LoginForm = ({ closeModal, openSignUpModal }) => {
     }
   };
 
-  const handleKakaoLogin = () => {
-    Alert.alert('카카오로 로그인 요청');
+  const handleKakaoLogin = async () => {
+    try {
+      const redirectUri = 'https://eventcafe.site/kakao/app-redirect.html';
+      const loginUrl = `https://eventcafe.site/user/auth/kakao/login/?redirect_uri=${encodeURIComponent(
+        redirectUri
+      )}`;
+
+      const result = await WebBrowser.openAuthSessionAsync(
+        loginUrl,
+        redirectUri
+      );
+      console.log('카카오 로그인 결과:', result);
+
+      if (result.type === 'success' && result.url) {
+        const urlObj = new URL(result.url);
+        const token = urlObj.searchParams.get('token');
+
+        if (token) {
+          console.log('✅ 카카오 토큰:', token);
+
+          await AsyncStorage.setItem('accessToken', token);
+          alert('카카오 로그인 성공!');
+          navigate('Main');
+          closeModal();
+        } else {
+          alert('토큰을 받아오지 못했습니다.');
+        }
+      } else {
+        alert('카카오 로그인 취소됨');
+      }
+    } catch (e) {
+      console.error('카카오 로그인 오류:', e);
+      alert('카카오 로그인 중 오류 발생');
+    }
   };
 
   return (
