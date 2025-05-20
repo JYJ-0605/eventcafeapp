@@ -94,6 +94,7 @@ const SignUpForm = ({ closeModal, openLoginModal }) => {
         }
       );
       Alert.alert('이메일 인증', '✅ 이메일 인증이 완료되었습니다!');
+      setShowEmailVerification(false); // ✅ 인증 성공 시 UI 닫기
     } catch (err) {
       console.error('인증 실패:', err.response?.data);
       Alert.alert('❌ 인증 코드가 잘못되었거나 만료되었습니다.');

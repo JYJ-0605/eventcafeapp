@@ -7,6 +7,15 @@ import { UserProvider } from './src/context/UserContext'; // 경로 맞게 수�
 import AppNavigator from './src/navigation/AppNavigator';
 import { navigationRef } from './src/navigation/NavigatorRef'; // 요거 추가!
 
+const linking = {
+  prefixes: ['eventcafeapp://'],
+  config: {
+    screens: {
+      KakaoRedirect: 'redirect',
+    },
+  },
+};
+
 export default function App() {
   const [modalVisible, setModalVisible] = useState(false);
   const [showSignUpModal, setShowSignUpModal] = useState(false);
@@ -14,7 +23,7 @@ export default function App() {
   return (
     <UserProvider>
       <SafeAreaProvider>
-        <NavigationContainer ref={navigationRef}>
+        <NavigationContainer linking={linking} ref={navigationRef}>
           <SafeAreaView
             style={styles.container}
             edges={['left', 'right', 'bottom']}

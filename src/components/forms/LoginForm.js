@@ -81,15 +81,18 @@ const LoginForm = ({ closeModal, openSignUpModal }) => {
 
   const handleKakaoLogin = async () => {
     try {
-      const redirectUri = 'https://eventcafe.site/kakao/app-redirect.html';
-      const loginUrl = `https://eventcafe.site/user/auth/kakao/login/?redirect_uri=${encodeURIComponent(
+      const redirectUri =
+        'https://eventcafe.site/user/social/kakao/app-redirect.html';
+
+      const loginUrl = `https://kauth.kakao.com/oauth/authorize?client_id=4083ddda8b18709f62bb857f2c52f127&redirect_uri=${encodeURIComponent(
         redirectUri
-      )}`;
+      )}&response_type=code`;
 
       const result = await WebBrowser.openAuthSessionAsync(
         loginUrl,
         redirectUri
       );
+      navigate('KakaoRedirect');
       console.log('카카오 로그인 결과:', result);
 
       if (result.type === 'success' && result.url) {

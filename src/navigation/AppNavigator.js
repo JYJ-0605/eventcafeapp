@@ -1,6 +1,6 @@
 // AppNavigator.js
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-
+import * as Linking from 'expo-linking';
 import BoardScreen from '../screens/Board/BoardScreen';
 import PostScreen from '../screens/Board/PostScreen';
 import CafeRegisterScreen from '../screens/CafeRegister/CafeRegisterScreen'; // 장소 등록 화면
@@ -27,6 +27,7 @@ import SignUpScreen from '../screens/SignUpScreen'; // 회원가입 화면
 import ArtistDetailScreen from '../screens/Subscribe/ArtistDetailScreen';
 import SubscribeArtistScreen from '../screens/Subscribe/SubscribeArtistScreen';
 import ProfilePage from '../screens/Profile/ProfilePage';
+import KakaoRedirectScreen from '../screens/KakaoRedirectScreen';
 
   const Stack = createNativeStackNavigator();
 
@@ -52,6 +53,7 @@ import ProfilePage from '../screens/Profile/ProfilePage';
         {/* 로그인, 회원가입 */}
         <Stack.Screen name="Login" component={LoginScreen} options={{ presentation: 'modal' }} />
         <Stack.Screen name="SignUp" component={SignUpScreen} options={{ title: '회원가입' }} />
+        <Stack.Screen name="KakaoRedirect" component={KakaoRedirectScreen} options={{ headerShown: false }}/>
         
         {/* 아티스트 구독 */}
         <Stack.Screen name="SubscribeArtist" component={SubscribeArtistScreen} options={{ title: '아티스트 구독', headerBackTitleVisible: false, headerBackTitle: "" }} />

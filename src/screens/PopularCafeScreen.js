@@ -13,11 +13,11 @@ const PopularCafeScreen = () => {
       .then((res) => res.json())
       .then((json) => setIdols(json));
 
-    fetch('https://eventcafe.site/data/youtuber.json')
+    fetch('https://eventcafe.site/user/star/stars/?genre=youtuber')
       .then((res) => res.json())
       .then((json) => setYoutubers(json));
 
-    fetch('https://eventcafe.site/data/game.json')
+    fetch('https://eventcafe.site//user/star/stars/?genre=game')
       .then((res) => res.json())
       .then((json) => setGames(json));
   }, []);

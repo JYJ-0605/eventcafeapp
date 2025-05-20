@@ -34,10 +34,16 @@
         "WRITE_EXTERNAL_STORAGE",
         "INTERNET"
       ],
-      "edgeToEdgeEnabled": true
+      "edgeToEdgeEnabled": true,
+      "package": "com.realfishbread.eventcafeapp"
     },
     "web": {
       "favicon": "./assets/favicon.png"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "66053e72-1c7d-42f2-8ecf-92e8b8a63492"
+      }
     }
   }
 }
