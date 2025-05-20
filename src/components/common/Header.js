@@ -1,9 +1,16 @@
 // 로고, 로그인 헤더
 import { FontAwesome } from '@expo/vector-icons';
-import React, { useRef, useState } from 'react';
-import { Animated, Easing, Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import React, { useState } from 'react';
+import {
+  Animated,
+  Easing,
+  Image,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import logo from '../../../assets/logo.png';
-import SlideMenu from './SlideMenu';
 
 const Header = ({
   onLoginPress,
@@ -16,19 +23,17 @@ const Header = ({
 }) => {
   const toggleMenu = () => {
     const toValue = isMenuOpen ? 200 : 0; // 200px 오른쪽 → 0으로 슬라이드
-  
+
     Animated.timing(slideAnim, {
       toValue,
       duration: 300,
       easing: Easing.out(Easing.ease),
       useNativeDriver: true,
     }).start();
-  
+
     setIsMenuOpen(!isMenuOpen);
   };
 
-  
- 
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   return (
@@ -56,10 +61,10 @@ const Header = ({
         {isLoggedIn ? (
           <>
             <TouchableOpacity onPress={onToggleMenu}>
-              {user?.profileImage ? (
+              {user?.profile_image ? (
                 <Image
-                  source={{ uri: user.profileImage }}
-                  style={styles.profileImage}
+                  source={{ uri: user.profile_image }}
+                  style={styles.profile_image}
                 />
               ) : (
                 <View style={styles.avatarCircle}>
@@ -68,9 +73,6 @@ const Header = ({
                   </Text>
                 </View>
               )}
-            
-
-           
             </TouchableOpacity>
           </>
         ) : (
@@ -108,7 +110,7 @@ const styles = StyleSheet.create({
     fontSize: 17,
     color: '#007bff',
   },
-  profileImage: {
+  profile_image: {
     width: 40,
     height: 40,
     borderRadius: 20,

@@ -1,4 +1,4 @@
-import { FontAwesome, MaterialIcons } from '@expo/vector-icons';
+import { FontAwesome } from '@expo/vector-icons';
 import React, { useEffect, useState } from 'react';
 import { Image, ScrollView, Text, TouchableOpacity, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -17,7 +17,7 @@ const PopularCafeScreen = () => {
       .then((res) => res.json())
       .then((json) => setYoutubers(json));
 
-    fetch('https://eventcafe.site//user/star/stars/?genre=game')
+    fetch('https://eventcafe.site/user/star/stars/?genre=game')
       .then((res) => res.json())
       .then((json) => setGames(json));
   }, []);
@@ -70,11 +70,20 @@ const CategorySection = ({ title, items = [] }) => {
             {item.image && (
               <Image
                 source={{ uri: item.image }}
-                style={{ width: 80, height: 60, marginBottom: 5, borderRadius: 5 }}
+                style={{
+                  width: 80,
+                  height: 60,
+                  marginBottom: 5,
+                  borderRadius: 5,
+                }}
                 resizeMode="contain"
               />
             )}
-            <Text style={{ fontWeight: 'bold', fontSize: 12, textAlign: 'center' }}>{item.name}</Text>
+            <Text
+              style={{ fontWeight: 'bold', fontSize: 12, textAlign: 'center' }}
+            >
+              {item.name}
+            </Text>
           </TouchableOpacity>
         ))}
       </View>

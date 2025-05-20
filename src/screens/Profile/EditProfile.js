@@ -1,16 +1,24 @@
-import React, { useContext, useEffect, useState } from 'react';
-import { View, Text, TextInput, StyleSheet, TouchableOpacity, Image, ScrollView, Alert } from 'react-native';
 import { Avatar } from '@rneui/themed'; // react-native-elements 사용
-import { UserContext } from '../../context/UserContext'; // Context API (본인 앱 구조에 맞게 수정)
-import axiosInstance from '../../shared/api/axiosInstance'; // Axios 설정 (본인 앱 구조에 맞게 수정)
 import * as ImagePicker from 'expo-image-picker'; // 이미지 피커
+import React, { useContext, useEffect, useState } from 'react';
+import {
+  Alert,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View,
+} from 'react-native';
+import axiosInstance from '../../API/axiosInstance'; // Axios 설정 (본인 앱 구조에 맞게 수정)
+import { UserContext } from '../../context/UserContext'; // Context API (본인 앱 구조에 맞게 수정)
 
 export default function EditProfile({ navigation }) {
   const [nickname, setNickname] = useState('');
   const [email, setEmail] = useState('');
   const [bio, setBio] = useState('');
   const [previewImage, setPreviewImage] = useState(null);
-  const [profileImage, setProfileImage] = useState(null);
+  const [profile_image, setProfileImage] = useState(null);
 
   const { user, setUser } = useContext(UserContext); // ✅ 로그인된 유저
 
@@ -59,19 +67,23 @@ export default function EditProfile({ navigation }) {
       formData.append('email', email);
       formData.append('bio', bio);
 
-      if (profileImage) {
+      if (profile_image) {
         // React Native의 FormData는 URI를 직접 처리하기 어려울 수 있습니다.
         // 백엔드에서 URI를 처리할 수 있다면 그대로 보내거나,
         // base64 인코딩하여 문자열로 보내는 방식을 고려해야 합니다.
         // 여기서는 임시로 파일 객체를 append 합니다. 실제 백엔드 구현에 맞춰 수정하세요.
-        formData.append('profile_image', profileImage);
+        formData.append('profile_image', profile_image);
       }
 
-      const response = await axiosInstance.patch('/user/profile/update/', formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        },
-      });
+      const response = await axiosInstance.patch(
+        '/user/profile/update/',
+        formData,
+        {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+        }
+      );
 
       setUser(response.data);
       Alert.alert('성공', '변경사항이 저장되었습니다!', [
@@ -84,14 +96,22 @@ export default function EditProfile({ navigation }) {
   };
 
   return (
-    <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}>
+    <ScrollView
+      style={styles.container}
+      contentContainerStyle={styles.contentContainer}
+    >
       <View style={styles.card}>
         <Text style={styles.title}>프로필 수정</Text>
 
         {/* 프로필 사진 */}
         <TouchableOpacity style={styles.imageContainer} onPress={pickImage}>
-          {previewImage ? (
-            <Avatar source={previewImage} size={110} rounded containerStyle={styles.profileImage} />
+          {preview_image ? (
+            <Avatar
+              source={previewImage}
+              size={110}
+              rounded
+              containerStyle={styles.profile_image}
+            />
           ) : (
             <View style={styles.defaultProfile}>
               <Text style={styles.defaultProfileText}>사진 선택</Text>

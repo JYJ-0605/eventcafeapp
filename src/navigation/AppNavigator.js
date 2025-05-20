@@ -28,7 +28,7 @@ import ArtistDetailScreen from '../screens/Subscribe/ArtistDetailScreen';
 import SubscribeArtistScreen from '../screens/Subscribe/SubscribeArtistScreen';
 import ProfilePage from '../screens/Profile/ProfilePage';
 import KakaoRedirectScreen from '../screens/KakaoRedirectScreen';
-
+import EditProfile from '../screens/Profile/EditProfile';
   const Stack = createNativeStackNavigator();
 
   const AppNavigator = ({ onLoginPress }) => {
@@ -93,6 +93,7 @@ import KakaoRedirectScreen from '../screens/KakaoRedirectScreen';
         <Stack.Screen name="InputCollabEventInfo" component={InputCollabEventInfo} options={{ title: '콜라보카페 이벤트 세부 정보 입력', headerBackTitleVisible: false, headerBackTitle: "" }} />
         <Stack.Screen name="EventInfoSubmit" component={EventInfoSubmitScreen} options={{ title: '이벤트 등록 완료', headerBackTitleVisible: false, headerBackTitle: "" }} />
         <Stack.Screen name="Profile" component={ProfilePage} options={{ title: '프로필 페이지', headerBackTitleVisible: false, headerBackTitle: "" }} />
+        <Stack.Screen name="EditProfile" component={EditProfile} options={{ title: '프로필 수정', headerBackTitleVisible: false, headerBackTitle: "" }} />
       </Stack.Navigator>
     );
   };

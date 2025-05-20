@@ -1,6 +1,7 @@
-import { Avatar, CircularProgress } from '@rneui/themed'; // react-native-elements 사용
+import { Avatar } from '@rneui/themed'; // react-native-elements 사용
 import React, { useContext, useEffect, useState } from 'react';
 import {
+  ActivityIndicator,
   Image,
   ScrollView,
   StyleSheet,
@@ -10,12 +11,20 @@ import {
 } from 'react-native';
 import axiosInstance from '../../API/axiosInstance'; // Axios 설정 (본인 앱 구조에 맞게 수정)
 import { UserContext } from '../../context/UserContext'; // Context API (본인 앱 구조에 맞게 수정)
+import { navigate } from '../../navigation/NavigatorRef';
 
 const ProfilePage = ({ route, navigation }) => {
   const { nickname } = route.params; // useParams 대신 route.params 사용
-  const { user } = useContext(UserContext); // ✅ 로그인된 유저 (Context API)
+  const { user, ready } = useContext(UserContext); // ✅ 로그인된 유저 (Context API)
   const [profile, setProfile] = useState(null);
   const [loading, setLoading] = useState(true);
+
+  const getUserInitial = () => {
+    if (user && user.nickname && typeof user.nickname === 'string') {
+      return user.nickname.charAt(0).toUpperCase();
+    }
+    return '유';
+  };
 
   useEffect(() => {
     // React Native에서는 useEffect 내에서 비동기 함수를 바로 사용할 수 없습니다.
@@ -25,6 +34,12 @@ const ProfilePage = ({ route, navigation }) => {
         setProfile(res.data);
         setLoading(false);
       } catch (err) {
+        if (!nickname) {
+          console.error('닉네임이 정의되지 않음');
+          setProfile(null);
+          setLoading(false);
+          return;
+        }
         console.error(err);
         setLoading(false);
       }
@@ -36,7 +51,15 @@ const ProfilePage = ({ route, navigation }) => {
   if (loading) {
     return (
       <View style={styles.loadingContainer}>
-        <CircularProgress />
+        <ActivityIndicator size="large" color="#6C63FF" />
+      </View>
+    );
+  }
+
+  if (!ready) {
+    return (
+      <View style={styles.loadingContainer}>
+        <ActivityIndicator size="large" color="#6C63FF" />
       </View>
     );
   }
@@ -44,16 +67,14 @@ const ProfilePage = ({ route, navigation }) => {
   if (!profile) {
     return (
       <ScrollView contentContainerStyle={styles.errorContainer}>
-        {user?.profileImage ? (
+        {user?.profile_image ? (
           <Image
-            source={{ uri: user.profileImage }}
-            style={styles.profileImage}
+            source={{ uri: user.profile_image }}
+            style={styles.profile_image}
           />
         ) : (
           <View style={styles.avatarCircle}>
-            <Text style={styles.avatarText}>
-              {user?.nickname?.charAt(0).toUpperCase() || '유'}
-            </Text>
+            <Text style={styles.avatarText}>{getUserInitial()}</Text>
           </View>
         )}
         <Text style={styles.errorTitle}>😢 사용자 정보를 찾을 수 없어요!</Text>
@@ -70,7 +91,7 @@ const ProfilePage = ({ route, navigation }) => {
     );
   }
 
-  const isMyProfile = user?.nickname === profile.nickname; // ✅ 비교!
+  const isMyProfile = user?.nickname === profile?.nickname; // ✅ 비교!
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
@@ -108,7 +129,7 @@ const ProfilePage = ({ route, navigation }) => {
         {isMyProfile ? (
           <TouchableOpacity
             style={styles.editButton}
-            onPress={() => navigation.navigate('EditProfile')} // EditProfile 스크린으로 이동
+            onPress={() => navigate('EditProfile')} // EditProfile 스크린으로 이동
           >
             <Text style={styles.editButtonText}>✏️ 프로필 수정</Text>
           </TouchableOpacity>
@@ -120,7 +141,7 @@ const ProfilePage = ({ route, navigation }) => {
             <TouchableOpacity
               style={styles.viewPostsButton}
               onPress={() =>
-                navigation.navigate('UserPosts', { nickname: profile.nickname })
+                navigate('UserPosts', { nickname: profile.nickname })
               } // UserPosts 스크린으로 이동
             >
               <Text style={styles.viewPostsButtonText}>

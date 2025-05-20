@@ -96,7 +96,7 @@ const MainScreen = ({ onLoginPress, navigation }) => {
           AsyncStorage.removeItem('accessToken'); // 필요시 토큰 삭제
         }}
         onProfilePress={() => {
-          navigate('Profile');
+          navigate('Profile',{ nickname: user.nickname });
           setIsMenuOpen(false);
         }}
       />
