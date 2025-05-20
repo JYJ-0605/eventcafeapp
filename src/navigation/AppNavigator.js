@@ -29,6 +29,7 @@ import SubscribeArtistScreen from '../screens/Subscribe/SubscribeArtistScreen';
 import ProfilePage from '../screens/Profile/ProfilePage';
 import KakaoRedirectScreen from '../screens/KakaoRedirectScreen';
 import EditProfile from '../screens/Profile/EditProfile';
+import AddressSearch from '../components/common/AddressSearch';
   const Stack = createNativeStackNavigator();
 
   const AppNavigator = ({ onLoginPress }) => {
@@ -94,6 +95,8 @@ import EditProfile from '../screens/Profile/EditProfile';
         <Stack.Screen name="EventInfoSubmit" component={EventInfoSubmitScreen} options={{ title: '이벤트 등록 완료', headerBackTitleVisible: false, headerBackTitle: "" }} />
         <Stack.Screen name="Profile" component={ProfilePage} options={{ title: '프로필 페이지', headerBackTitleVisible: false, headerBackTitle: "" }} />
         <Stack.Screen name="EditProfile" component={EditProfile} options={{ title: '프로필 수정', headerBackTitleVisible: false, headerBackTitle: "" }} />
+        
+        <Stack.Screen name="AddressSearch" component={AddressSearch} options={{ title: '주소 검색', headerBackTitleVisible: false, headerBackTitle: "" }} />
       </Stack.Navigator>
     );
   };

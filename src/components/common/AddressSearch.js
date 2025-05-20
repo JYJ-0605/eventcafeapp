@@ -12,25 +12,30 @@ const AddressSearch = ({ navigation, route }) => {
   };
 
   const htmlContent = `
-    <!DOCTYPE html>
-    <html>
-      <head>
-        <meta charset="utf-8">
-        <title>주소검색</title>
-        <script src="https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
-      </head>
-      <body>
-        <div id="wrap"></div>
-        <script>
-          new daum.Postcode({
-            oncomplete: function(data) {
-              window.ReactNativeWebView.postMessage(data.address);
-            }
-          }).open();
-        </script>
-      </body>
-    </html>
-  `;
+  <!DOCTYPE html>
+  <html>
+    <head>
+      <meta charset="utf-8">
+      <title>주소검색</title>
+      <script src="https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+      <style>
+        html, body { height: 100%; margin: 0; padding: 0; }
+        #wrap { height: 100%; }
+      </style>
+    </head>
+    <body>
+      <div id="wrap"></div>
+      <script>
+        var element = document.getElementById('wrap');
+        new daum.Postcode({
+          oncomplete: function(data) {
+            window.ReactNativeWebView.postMessage(data.address);
+          }
+        }).embed(element);
+      </script>
+    </body>
+  </html>
+`;
 
   return (
     <WebView

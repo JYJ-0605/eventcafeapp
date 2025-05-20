@@ -9,6 +9,7 @@ import {
   View,
 } from 'react-native';
 import AddressSearch from '../../components/common/AddressSearch';
+import { navigate } from '../../navigation/NavigatorRef';
 
 const categories = ['카페', '음식점', '전시회', '포토부스', '파티룸'];
 

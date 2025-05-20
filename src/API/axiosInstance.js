@@ -1,7 +1,6 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 import { Alert } from 'react-native';
-import {navigate} from '../navigation/NavigatorRef'; // ❗ 네비게이션 리다이렉트용 (아래 참고)
 
 // ① 인스턴스 만들기
 const axiosInstance = axios.create({
@@ -14,7 +13,10 @@ axiosInstance.interceptors.request.use(
   async (config) => {
     const token = await AsyncStorage.getItem('accessToken');
     if (token) {
-      config.headers.Authorization = `Bearer ${token}`;
+      config.headers = {
+        ...(config.headers || {}), // 기존 헤더 유지
+        Authorization: `Bearer ${token}`, // 추가만
+      };
     }
     return config;
   },

@@ -22,6 +22,7 @@
       }
     },
     "android": {
+      "usesCleartextTraffic": true,
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
@@ -34,6 +35,7 @@
         "WRITE_EXTERNAL_STORAGE",
         "INTERNET"
       ],
+      "useNextNotificationsApi": true,
       "edgeToEdgeEnabled": true,
       "package": "com.realfishbread.eventcafeapp"
     },
