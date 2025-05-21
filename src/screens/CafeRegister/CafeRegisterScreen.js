@@ -73,8 +73,7 @@ const CafeRegisterScreen = ({ navigation }) => {
       }
       await axiosInstance.post('/user/venues/create/', formData, {
         headers: {
-          // 'Content-Type' 은 주지마! → Axios가 자동 설정하게 놔둬야 함
-          Authorization: `Bearer ${token}`,
+          'Content-Type': 'multipart/form-data',
         },
       });
       alert('장소 등록 완료!');
@@ -95,7 +94,7 @@ const CafeRegisterScreen = ({ navigation }) => {
     }
 
     const result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ImagePicker.MediaTypeOptions.Images,
+      mediaTypes: ['images'],
       allowsEditing: true,
       quality: 1,
     });

@@ -17,7 +17,7 @@ export default function EditProfile({ navigation }) {
   const [nickname, setNickname] = useState('');
   const [email, setEmail] = useState('');
   const [bio, setBio] = useState('');
-  const [previewImage, setPreviewImage] = useState(null);
+  const [preview_image, setPreviewImage] = useState(null);
   const [profile_image, setProfileImage] = useState(null);
 
   const { user, setUser } = useContext(UserContext); // ✅ 로그인된 유저
@@ -42,7 +42,7 @@ export default function EditProfile({ navigation }) {
     }
 
     const result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ImagePicker.MediaTypeOptions.Images,
+      mediaTypes: ['images'],
       allowsEditing: true,
       aspect: [1, 1],
       quality: 0.8,
@@ -107,7 +107,7 @@ export default function EditProfile({ navigation }) {
         <TouchableOpacity style={styles.imageContainer} onPress={pickImage}>
           {preview_image ? (
             <Avatar
-              source={previewImage}
+              source={preview_image}
               size={110}
               rounded
               containerStyle={styles.profile_image}
@@ -186,7 +186,7 @@ const styles = StyleSheet.create({
     marginBottom: 24,
     alignItems: 'center',
   },
-  profileImage: {
+  profile_image: {
     borderWidth: 3,
     borderColor: '#7a70ff',
     marginBottom: 10,

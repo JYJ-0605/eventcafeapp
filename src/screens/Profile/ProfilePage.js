@@ -96,17 +96,25 @@ const ProfilePage = ({ route, navigation }) => {
   return (
     <ScrollView contentContainerStyle={styles.container}>
       <View style={styles.paper}>
-        <Avatar
-          source={{ uri: profile.profile_image }}
-          title={
-            profile.nickname
-              ? profile.nickname.substring(0, 2).toUpperCase()
-              : 'U'
-          }
-          size={110}
-          rounded
-          containerStyle={styles.avatar}
-        />
+        {profile.profile_image ? (
+          <Avatar
+            source={{ uri: profile.profile_image }}
+            size={110}
+            containerStyle={styles.avatar}
+            rounded
+          />
+        ) : (
+          <Avatar
+            title={
+              profile.nickname
+                ? profile.nickname.substring(0, 2).toUpperCase()
+                : 'U'
+            }
+            size={110}
+            containerStyle={styles.avatar}
+            rounded
+          />
+        )}
         <Text style={styles.nickname}>{profile.nickname}</Text>
         <Text style={styles.email}>{profile.email}</Text>
 
@@ -290,6 +298,11 @@ const styles = StyleSheet.create({
     color: '#6C63FF',
     fontWeight: 'bold',
     fontSize: 16,
+  },
+  profile_image: {
+    borderWidth: 3,
+    borderColor: '#7a70ff',
+    marginBottom: 10,
   },
 });
 
