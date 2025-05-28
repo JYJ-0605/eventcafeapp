@@ -25,6 +25,7 @@
 
 ## 🗓️개발-일정
 
+## 🔨기술-스택
 | 분류 | 기술 |
 |------|------|
 | 🚀 **Stack** | ![React](https://img.shields.io/badge/React-61DAFB?style=flat&logo=react&logoColor=white) ![React Native](https://img.shields.io/badge/React_Native-61DAFB?style=flat&logo=react&logoColor=white) ![Expo](https://img.shields.io/badge/Expo-000020?style=flat&logo=expo&logoColor=white) ![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=flat&logo=javascript&logoColor=black) ![Node.js](https://img.shields.io/badge/Node.js-339933?style=flat&logo=nodedotjs&logoColor=white) ![Python](https://img.shields.io/badge/Python-3776AB?style=flat&logo=python&logoColor=white) ![Django](https://img.shields.io/badge/Django-092E20?style=flat&logo=django&logoColor=white) |
@@ -37,8 +38,6 @@
 | 🎨 **Design** | ![Figma](https://img.shields.io/badge/Figma-F24E1E?style=flat&logo=figma&logoColor=white) |
 | 🖥 **IDE** | ![VSCode](https://img.shields.io/badge/VS_Code-007ACC?style=flat&logo=visualstudiocode&logoColor=white) |
 | 🚀 **Deploy** | ![GitHub Actions](https://img.shields.io/badge/GitHub_Actions-2088FF?style=flat&logo=githubactions&logoColor=white) |
-
-## 🔨기술-스택
 
 ## 🔍기능-및-구조
 
